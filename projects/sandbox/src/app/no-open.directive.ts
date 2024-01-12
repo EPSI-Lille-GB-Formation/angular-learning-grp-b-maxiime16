@@ -1,15 +1,16 @@
 import { Directive, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[preventLink]',
+  selector: '[appNoOpen]',
   standalone: true
-
 })
-export class PreventLinkDirective {
+export class NoOpenDirective {
+
   constructor() { }
-  
+
   @HostListener('click', ['$event'])
   onClick(event: Event){
     event.preventDefault();
+
   }
 }
