@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
-import { Todo } from '../todo';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Todo } from '../../todo';
 import { CommonModule } from '@angular/common';
-import { BorderHighlightDirective } from '../border-highlight.directive';
+import { BorderHighlightDirective } from '../../directives/border-highlight.directive';
 
 @Component({
   selector: 'todo',
