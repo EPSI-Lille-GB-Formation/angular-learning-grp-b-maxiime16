@@ -2,7 +2,12 @@
 
 ## a rappel commandes:
 - ng serve BiblioTech
-- ng generate guard|service|component <name>  --project BiblioTech --skip-tests 
+- ng generate guard|service|component <name>  --project BiblioTech --skip-tests
+
+## Users tests:
+- maxime.devillepoix@exemple.com | max123
+- enzo.desousa@exemple.com | enz123
+
 ## Choses a faire:
 ### Les livres
 - 🔄 Créer, modifier, supprimer, trier et consulter (CRUD)

@@ -10,13 +10,19 @@ import { USERS } from '../mocks/mock-user';
 export class UserService {
   constructor() {}
 
-  getCurrentUserName$(currentUserId$: Observable<number | null>): Observable<string | null> {
+  // Fonction pour récupérer le nom d'utilisateur actuel
+  getCurrentUserName$(
+    currentUserId$: Observable<number | null>
+  ): Observable<string | null> {
     return currentUserId$.pipe(
       map((userId) => USERS.find((u) => u.id === userId)?.firstName || null)
     );
   }
 
-  getCurrentUserFirstName$(currentUserId$: Observable<number | null>): Observable<string | null> {
+  // Fonction pour récupérer le prénom de l'utilisateur actuel
+  getCurrentUserFirstName$(
+    currentUserId$: Observable<number | null>
+  ): Observable<string | null> {
     return currentUserId$.pipe(
       map((userId) => USERS.find((u) => u.id === userId)?.lastName || null)
     );
