@@ -17,6 +17,11 @@ export class BookService {
     return this.http.get<Book | undefined>(url);
   }
 
+  // méthode pour récupérer la liste des livres
+  getBooks(): Observable<Book[]> {
+    return this.http.get<Book[]>(this.apiUrl);
+  }
+
   // Fonction pour créer un nouveau livre
   createBook(newBook: Book): Observable<Book> {
     return this.http.post<Book>(this.apiUrl, newBook);

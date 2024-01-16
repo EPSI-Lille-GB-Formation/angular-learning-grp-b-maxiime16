@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
@@ -7,9 +9,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user';
-import { CommonModule } from '@angular/common';
 import { ShareService } from '../../services/share.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth-login',
@@ -66,50 +66,56 @@ export class AuthLoginComponent {
   messageConnexion: string = '';
   messageConnexionClass: string = '';
 
+  // Constructeur avec injection des dépendances nécessaires
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private shareService: ShareService,
     private router: Router
   ) {
+    // Initialisation du formulaire réactif avec des champs vides et des validateurs
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
     });
   }
 
+  // Fonction appelée lors de la soumission du formulaire
   onSubmit(): void {
-    // Réinitialiser les messages à chaque soumission
+    // Réinitialisation des messages à chaque soumission
     this.champsVides = false;
     this.messageConnexion = '';
     this.messageConnexionClass = '';
 
+    // Vérification de la validité du formulaire
     if (this.loginForm.valid) {
       const user: User = {
-        id: 1, // Vous pouvez définir l'id en conséquence
-        firstName: '', // Remplissez ces valeurs avec les données correctes
+        id: 1,
+        firstName: '',
         lastName: '',
         email: this.loginForm.value.email,
         password: this.loginForm.value.password,
-        role: 'user', // Ou tout autre rôle que vous souhaitez attribuer
+        role: '',
       };
 
-      // Appeler le service d'authentification pour vérifier les informations
+      // Appel du service d'authentification pour vérifier les informations
       this.authService.login(user).subscribe(
         (authenticatedUser: User | null) => {
           if (authenticatedUser) {
+            // Mise à jour de l'état de connexion dans le service de partage
             this.shareService.setLoggedIn(
               true,
               authenticatedUser.id,
               authenticatedUser.role
             );
-            this.messageConnexion = 'Connexion réussie !';
+            this.messageConnexion = 'Connexion réussie !'; // Message de connexion réussie
 
             setTimeout(() => {
-              // Naviguez vers la liste des livres après la suppression réussie avec un délai
+              // Navigation vers la liste des livres après la connexion réussie avec un délai
               this.router.navigate(['']);
-            }, 1000);
+            }, 2000);
           } else {
+            // Mise à jour de l'état de connexion en cas d'échec
             this.shareService.setLoggedIn(false, null, null);
             this.messageConnexion = 'Email ou mot de passe incorrect.';
             console.log(

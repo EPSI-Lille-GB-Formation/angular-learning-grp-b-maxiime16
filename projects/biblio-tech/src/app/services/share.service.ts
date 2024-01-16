@@ -48,8 +48,8 @@ export class ShareService {
   }
 
   // Fonction pour récupérer l'ID de l'utilisateur actuel
-  getCurrentUserId(): number | null {
-    return this.currentUserIdSubject.value;
+  getCurrentUserId(): number  {
+    return this.currentUserIdSubject.value || 0; // Utilisez une valeur par défaut (0 dans cet exemple) si la valeur actuelle est nulle
   }
 
   // Fonction pour récupérer le rôle de l'utilisateur actuel

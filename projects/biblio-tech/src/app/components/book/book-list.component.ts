@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { BOOKS } from '../../mocks/mock-book';
-import { BookComponent } from './book.component';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-
-
+import { Observable } from 'rxjs';
+import { BookComponent } from './book.component';
+import { BookService } from '../../services/book.service';
+import { Book } from '../../models/book';
 
 @Component({
   selector: 'book-list-component',
@@ -12,13 +12,13 @@ import { Router } from '@angular/router';
   imports: [CommonModule, BookComponent],
   template:`
   <h2>Liste des livres:</h2>
-  <div>
-    <ng-container *ngFor="let book of bookList">
-      <book-component [value]="book"></book-component>
-    </ng-container>
+  <div *ngIf="!(isLoggedIn$ | async)">
+    <button (click)="goToBookCreatePage()" class="add-button">Ajouter un livre ⊕</button>
   </div>
   <div>
-    <button (click)="goToBookCreatePage()" class="add-button">Ajouter un livre ⊕</button>
+    <ng-container *ngFor="let book of bookList$ | async">
+      <book-component [value]="book"></book-component>
+    </ng-container>
   </div>
   
   `,
@@ -33,16 +33,24 @@ import { Router } from '@angular/router';
     }
   `]
 })
-export class BookListComponent {
+export class BookListComponent implements OnInit{
 
-  bookList = BOOKS;
+  isLoggedIn$: Observable<boolean> = new Observable<boolean>();
+  bookList$: Observable<Book[]> = new Observable<Book[]>(); // Initialisez la propriété ici
 
   constructor(
-    private router: Router
-  ) { }
+    private router: Router,
+    private bookService: BookService
+  ) { 
+  }
+
+
+  ngOnInit() {
+    // Obtenez la liste des livres à partir du service
+    this.bookList$ = this.bookService.getBooks();
+  }
 
   goToBookCreatePage(){
     this.router.navigate(['/add-book']);
   }
-
 }
