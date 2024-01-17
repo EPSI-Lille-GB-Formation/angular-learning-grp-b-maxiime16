@@ -1,12 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 
 import { Book } from '../../models/book';
-import { USERS } from '../../mocks/mock-user';
 import { BookService } from '../../services/book.service';
 import { ShareService } from '../../services/share.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'book-read-component',
@@ -14,22 +14,27 @@ import { ShareService } from '../../services/share.service';
   imports: [CommonModule],
   template: `
     <div>
-      <h1>Informations sur livre:</h1>
+      <h1>Informations sur le livre :</h1>
       <article>
-        <p>Titre: {{ bookRead?.title }}</p>
-        <p>Auteur: {{ getAuthorName(bookRead?.idUser) }}</p>
-        <p>Résumé: {{ bookRead?.resume }}</p>
+        <p>Titre : {{ bookRead?.title }}</p>
+        <p>Auteur : {{ authorName$ | async }} {{ authorFirstName$ | async }}</p>
+        <p>Résumé : {{ bookRead?.resume }}</p>
         <p>
-          Date de création: {{ bookRead?.createdAt | date : 'dd MMMM yyyy ' }}
+          Date de création : {{ bookRead?.createdAt | date : 'dd MMMM yyyy ' }}
         </p>
         <p>
-          Dernière mise à jour:
+          Dernière mise à jour :
           {{ bookRead?.updateAt | date : 'dd MMMM yyyy, H:mm' }}
         </p>
       </article>
       <div class="grid">
-        <button *ngIf="canEditOrDelete(bookRead?.idUser)" (click)="goToEditBookPage(bookRead?.id)">Éditer</button>
-        <button *ngIf="canEditOrDelete(bookRead?.idUser)" class="delete-button" (click)="goToDeleteBookPage(bookRead?.id)">Supprimer</button>
+        <button (click)="goToEditBookPage(bookRead?.id)">Éditer</button>
+        <button
+          class="delete-button"
+          (click)="goToDeleteBookPage(bookRead?.id)"
+        >
+          Supprimer
+        </button>
       </div>
       <button (click)="goToHomePage()">Retour</button>
     </div>
@@ -47,64 +52,79 @@ import { ShareService } from '../../services/share.service';
     `,
   ],
 })
-export class BookReadComponent {
-  bookRead: Book | undefined;
-  isLoggedIn$: Observable<boolean>;
+export class BookReadComponent implements OnInit {
+  // Propriétés
+  bookRead: Book | undefined; // Le livre actuellement affiché
+  isLoggedIn$: Observable<boolean>; // Observable indiquant si l'utilisateur est connecté
+  authorName$: Observable<string | null> = new Observable<string | null>(); // Observable contenant le nom de l'auteur
+  authorFirstName$: Observable<string | null> = new Observable<string | null>(); // Observable contenant le prénom de l'auteur
 
   @Input('value')
-  book: Book | undefined;
+  book: Book | undefined; // Propriété d'entrée pour recevoir le livre à afficher
 
+  // Constructeur
   constructor(
     private bookService: BookService,
     private route: ActivatedRoute,
     private router: Router,
-    private shareService: ShareService
+    private shareService: ShareService,
+    private userService: UserService
   ) {
     this.isLoggedIn$ = this.shareService.isLoggedIn$;
   }
 
+  // Hook de cycle de vie OnInit
   ngOnInit() {
     const bookId = this.route.snapshot.paramMap.get('id');
 
     if (bookId) {
-      this.bookService
-        .getBookById(+bookId)
-        .subscribe((book) => (this.bookRead = book));
+      // Obtenir les détails du livre par ID
+      this.bookService.getBookById(+bookId).subscribe((book) => {
+        this.bookRead = book;
+
+        if (book && book.idUser) {
+          // Obtenir les détails de l'utilisateur par ID
+          this.userService
+            .getCurrentUserFromId(book.idUser)
+            .subscribe((user) => {
+              if (user) {
+                // Créer de nouveaux Observables pour le nom et le prénom de l'auteur
+                this.authorName$ = new Observable<string | null>((observer) => {
+                  observer.next(user.firstName);
+                  observer.complete();
+                });
+
+                this.authorFirstName$ = new Observable<string | null>(
+                  (observer) => {
+                    observer.next(user.lastName);
+                    observer.complete();
+                  }
+                );
+              }
+            });
+        }
+      });
     }
   }
 
-  getAuthorName(authorId: number | undefined): string {
-    const author = USERS.find((a) => a.id === authorId)!;
-    return `${author.firstName} ${author.lastName}`;
-  }
+  // Méthodes
+
+  // Naviguer vers la page d'accueil
   goToHomePage() {
     this.router.navigate(['']);
   }
 
+  // Naviguer vers la page de suppression du livre
   goToDeleteBookPage(bookId: number | undefined): void {
     if (bookId) {
       this.router.navigate(['/book/delete', bookId]);
     }
   }
 
+  // Naviguer vers la page d'édition du livre
   goToEditBookPage(bookId: number | undefined): void {
     if (bookId) {
       this.router.navigate(['/book/edit', bookId]);
     }
-  }
-
-  canEditOrDelete(bookUserId: number | undefined): boolean {
-    const currentUserId = this.shareService.getCurrentUserId();
-    const currentUserRole = this.shareService.getCurrentUserRole();
-    
-    console.log('Current user ID:', currentUserId);
-    console.log('Current user role:', currentUserRole);
-    console.log('Book user ID:', bookUserId);
-
-    // Vérifier si l'utilisateur connecté est l'auteur du livre ou s'il a le rôle 'admin'
-    return (
-      (currentUserId !== null && bookUserId === currentUserId) ||
-      currentUserRole === 'admin'
-    );
   }
 }

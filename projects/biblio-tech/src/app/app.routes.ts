@@ -7,12 +7,19 @@ import { BookCreateComponent } from './components/book/book-create.component';
 import { BookDeleteComponent } from './components/book/book-delete.component';
 import { BookEditComponent } from './components/book/book-edit.component';
 import { AuthLoginComponent } from './components/authentification/auth-login.component';
+import { UserReadComponent } from './components/user/user-read.component';
+import { UserEditComponent } from './components/user/user-edit.component';
 
 export const routes: Routes = [
     {path: '', component: BookListComponent},
-    {path: 'book/:id', component: BookReadComponent,  canActivate: [AuthGuard]},
-    {path: 'book/delete/:id', component: BookDeleteComponent,  canActivate: [AuthGuard]},
-    {path: 'add-book', component: BookCreateComponent,  canActivate: [AuthGuard]},
-    {path: 'book/edit/:id', component:BookEditComponent,  canActivate: [AuthGuard]},
-    {path: 'login', component:AuthLoginComponent}
+    {path: 'book/:id', component: BookReadComponent, canActivate: [AuthGuard]},
+    {path: 'book/delete/:id', component: BookDeleteComponent, canActivate: [AuthGuard]},
+    {path: 'add-book', component: BookCreateComponent, canActivate: [AuthGuard]},
+    {path: 'book/edit/:id', component:BookEditComponent, canActivate: [AuthGuard]},
+    {path: 'login', component:AuthLoginComponent},
+    //{path: 'user/:id', component:UserReadComponent, canActivate: [AuthGuard]},
+    //{path: 'user/edit/:id', component:UserEditComponent, canActivate: [AuthGuard]},
+    
+    {path: 'user/:id', component:UserReadComponent},
+    {path: 'user/edit/:id', component:UserEditComponent},
 ];

@@ -1,30 +1,50 @@
-// user.service.ts
-
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
-import { USERS } from '../mocks/mock-user';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor() {}
+  private apiUrl: string = 'api/users';
 
-  // Fonction pour récupérer le nom d'utilisateur actuel
-  getCurrentUserName$(
-    currentUserId$: Observable<number | null>
-  ): Observable<string | null> {
-    return currentUserId$.pipe(
-      map((userId) => USERS.find((u) => u.id === userId)?.firstName || null)
-    );
+  constructor(private http: HttpClient) {}
+
+  getCurrentUserNameFromId(currentUserId: number | null): Observable<string | null> {
+    if (currentUserId !== null) {
+      const url = `${this.apiUrl}/${currentUserId}`;
+      return this.http.get<User>(url).pipe(map((user) => user.firstName || null));
+    } else {
+      return new Observable<string | null>((observer) => {
+        observer.next(null);
+        observer.complete();
+      });
+    }
   }
 
-  // Fonction pour récupérer le prénom de l'utilisateur actuel
-  getCurrentUserFirstName$(
-    currentUserId$: Observable<number | null>
-  ): Observable<string | null> {
-    return currentUserId$.pipe(
-      map((userId) => USERS.find((u) => u.id === userId)?.lastName || null)
-    );
+  getCurrentUserFirstNameFromId(currentUserId: number | null): Observable<string | null> {
+    if (currentUserId !== null) {
+      const url = `${this.apiUrl}/${currentUserId}`;
+      return this.http.get<User>(url).pipe(map((user) => user.lastName || null));
+    } else {
+      return new Observable<string | null>((observer) => {
+        observer.next(null);
+        observer.complete();
+      });
+    }
+  }
+
+  getCurrentUserFromId(currentUserId: number | null): Observable<User | null> {
+    if (currentUserId !== null) {
+      const url = `${this.apiUrl}/${currentUserId}`;
+      return this.http.get<User>(url);
+    } else {
+      return new Observable<User | null>((observer) => {
+        observer.next(null);
+        observer.complete();
+      });
+    }
   }
 }

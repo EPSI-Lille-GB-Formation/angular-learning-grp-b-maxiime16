@@ -6,7 +6,8 @@ export class Book {
         public image: string,
         public createdAt: Date,
         public updateAt: Date|null,
-        public idUser: number
+        public idUser: number,
+        public idCategory: number[]
     ){ 
         this.createdAt = new Date();
     }

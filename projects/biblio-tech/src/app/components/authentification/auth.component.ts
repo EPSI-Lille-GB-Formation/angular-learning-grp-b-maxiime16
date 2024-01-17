@@ -19,13 +19,13 @@ import { UserService } from '../../services/user.service';
         <div *ngIf="isLoggedIn$ | async" class="grid">
           <div>
             <p>
-              Vous êtes connecté, bonjour {{ currentUserName$ | async }}
-              {{ currentUserFirstName$ | async }}
+              Vous êtes connecté, bonjour {{ currentUserName$ }}
+              {{ currentUserFirstName$ }}
             </p>
             <p>role: ({{ currentUserRole$ | async }})</p>
           </div>
-          <div>
-            <button>Voir profil</button>
+          <div class="grid">
+            <button (click)="goToUserReadPage()">Voir profil</button>
             <button *ngIf="(currentUserRole$ | async) === 'admin'">
               Admin zone
             </button>
@@ -41,8 +41,8 @@ export class AuthComponent implements OnInit {
   isLoggedIn$: Observable<boolean> = new Observable<boolean>();
   currentUserId$: Observable<number | null> = new Observable<number | null>();
   currentUserRole$: Observable<string | null> = new Observable<string | null>();
-  currentUserName$: Observable<string | null> = new Observable<string | null>(); // Propriété pour le nom d'utilisateur
-  currentUserFirstName$: Observable<string | null> = new Observable<string | null>(); // Propriété pour le prénom
+  currentUserName$: string | null = null; // Propriété pour le nom d'utilisateur
+  currentUserFirstName$: string | null = null; // Propriété pour le prénom
 
   constructor(
     private router: Router,
@@ -52,19 +52,35 @@ export class AuthComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Initialisation des observables liés à l'état de connexion et au rôle de l'utilisateur
     this.isLoggedIn$ = this.shared.isLoggedIn$;
     this.currentUserId$ = this.shared.currentUserId$;
     this.currentUserRole$ = this.shared.currentUserRole$;
 
-    // Utilisation du service d'utilisateur pour obtenir les noms d'utilisateur
-    this.currentUserName$ = this.userService.getCurrentUserName$(this.currentUserId$);
-    this.currentUserFirstName$ = this.userService.getCurrentUserFirstName$(this.currentUserId$);
+    // Extraction de la valeur de l'observable
+    this.currentUserId$.subscribe((userId: number | null) => {
+      if (userId !== null) {
+        this.userService.getCurrentUserNameFromId(userId).subscribe(
+          (userName: string | null) => this.currentUserName$ = userName
+        );
+
+        this.userService.getCurrentUserFirstNameFromId(userId).subscribe(
+          (firstName: string | null) => this.currentUserFirstName$ = firstName
+        );
+      }
+    });
   }
 
   // Naviguer vers la page de connexion
   goToLoginPage() {
     this.router.navigate(['/login']);
+  }
+
+  goToUserReadPage(): void {
+    this.currentUserId$.subscribe((userId: number | null) => {
+      if (userId !== null) {
+        this.router.navigate(['/user', userId]);
+      }
+    });
   }
 
   // Fonction de déconnexion
