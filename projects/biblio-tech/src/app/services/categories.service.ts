@@ -34,4 +34,19 @@ export class CategoryService {
       })
     );
   }
+
+  getIdCategoryByLabel(label: string): Observable<number | undefined> {
+    const url = `${this.apiUrl}?label=${label}`;
+    return this.http.get<any[]>(url).pipe(
+      map(categories => (categories.length > 0 ? categories[0].id : undefined))
+    );
+  }
+
+
+getLabel(): Observable<string[]> {
+  return this.http.get<any[]>(this.apiUrl).pipe(
+    map(categories => categories.map(category => category.label))
+  );
+}
+
 }

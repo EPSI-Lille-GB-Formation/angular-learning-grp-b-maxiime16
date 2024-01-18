@@ -1,48 +1,72 @@
+// test.component.ts
 import { Component, OnInit } from '@angular/core';
 import { BelongsService } from '../../services/belongs.service';
 import { CategoryService } from '../../services/categories.service';
+import { BookService } from '../../services/book.service';  // Assurez-vous d'importer le service BookService
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-votre-composant',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   template: `
     <h1>page test </h1>
-    <div *ngIf="labels !== null">
-      <p>Labels pour le livre avec l'id {{ currentBookId }} :</p>
-      <p>{{ labels.join(', ') }}</p>
-    </div>
-    <div *ngIf="labels === null">
-      <p>Aucun label trouvé pour le livre avec l'id {{ currentBookId }}.</p>
+    <div>      
+      <label for="categorySelect">Sélectionnez une catégorie :</label>
+      <select id="categorySelect" [(ngModel)]="selectedCategory" (change)="getData()">
+        <option value="">Tous les livres</option>
+        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+      </select>
+
+      <button (click)="getData()">Afficher les données</button>
+      
+      <div *ngIf="selectedCategory && idBooks">
+        <p>Liste des ID de livres pour la catégorie {{ selectedCategory }} :</p>
+        <ul>
+          <li *ngFor="let idBook of idBooks">{{ idBook }}</li>
+        </ul>
+      </div>
     </div>
   `,
   styles: []
 })
 export class TestComponent implements OnInit {
-  currentBookId: number= 1;
-  labels: string[] | null = null;
+
+  categories: string[] = [];
+  selectedCategory: string | undefined;
+  idBooks: number[] = [];
 
   constructor(
-    private belongsService: BelongsService,
     private categoryService: CategoryService,
+    private belongsService: BelongsService,
+    private bookService: BookService  // Ajoutez le service BookService ici
   ) {}
 
   ngOnInit(): void {
-    const idBook = 1; // Remplacez par l'id du livre que vous souhaitez tester
-    this.currentBookId = idBook;
-    this.testGetLabelByIdCategory(idBook);
+    this.categoryService.getLabel().subscribe(labels => {
+      this.categories = labels;
+    });
   }
 
-  testGetLabelByIdCategory(idBook: number): void {
-    this.categoryService.getLabelByIdCategory(idBook).subscribe(
-      (labels: string[]) => {
-        console.log(`Les labels pour le livre avec l'id ${idBook} sont :`, labels);
-        this.labels = labels;
-      },
-      error => {
-        console.error('Une erreur s\'est produite lors de la récupération des labels :', error);
-      }
-    );
+  getData() {
+    if (this.selectedCategory === "") {
+      this.bookService.getBooks().subscribe(books => {
+        const idBooks = books.map(book => book.id);
+        console.log('Liste de tous les idBooks :', idBooks);
+        this.idBooks = idBooks;
+      });
+    } else if (this.selectedCategory !== undefined) {
+      this.categoryService.getIdCategoryByLabel(this.selectedCategory).subscribe(idCategory => {
+        console.log('Résultat de getIdCategoryByLabel:', idCategory);
+
+        if (idCategory !== undefined) {
+          this.belongsService.getIdBookByIdCategory(idCategory).subscribe(idBooks => {
+            console.log('Liste de idBook obtenus par getIdBookByIdCategory:', idBooks);
+            this.idBooks = idBooks;
+          });
+        }
+      });
+    }
   }
 }

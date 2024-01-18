@@ -17,7 +17,11 @@ import { ShareService } from '../../services/share.service';
       Vous devez être connecté pour pouvoir afficher les détails d'un livre
     </p>
     <div>
-      <button *ngIf="(isLoggedIn$ | async)" (click)="goToBookCreatePage()" class="add-button">
+      <button
+        *ngIf="isLoggedIn$ | async"
+        (click)="goToBookCreatePage()"
+        class="add-button"
+      >
         Ajouter un livre ⊕
       </button>
     </div>
@@ -48,7 +52,7 @@ export class BookListComponent implements OnInit {
     private router: Router,
     private bookService: BookService,
     private shared: ShareService,
-    ) {}
+  ) {}
 
   ngOnInit() {
     // Obtenez la liste des livres à partir du service

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, forkJoin, map, of, switchMap } from 'rxjs';
 import { Belong } from '../models/belong';
 
 @Injectable({
@@ -18,5 +18,12 @@ export class BelongsService {
       .pipe(
         map(belongs => belongs.map(belong => belong.idCategory))
       );
+  }
+
+  getIdBookByIdCategory(idCategory: number): Observable<number[]> {
+    const url = `${this.apiUrl}?idCategory=${idCategory}`;
+    return this.http.get<any[]>(url).pipe(
+      map(belongs => belongs.map(belong => belong.idBook))
+    );
   }
 }
