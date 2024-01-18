@@ -95,7 +95,6 @@ export class BookCreateComponent implements OnInit {
         createdAt: new Date(),
         updateAt: null,
         idUser: userId,
-        idCategory:[],
       };
 
       // Appel du service pour créer un nouveau livre

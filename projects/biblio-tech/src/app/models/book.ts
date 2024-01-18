@@ -7,7 +7,6 @@ export class Book {
         public createdAt: Date,
         public updateAt: Date|null,
         public idUser: number,
-        public idCategory: number[]
     ){ 
         this.createdAt = new Date();
     }

@@ -9,7 +9,6 @@ export const BOOKS: Book[] = [
     createdAt: new Date(1998, 9, 16),
     updateAt: null,
     idUser: 2,
-    idCategory: [1, 2], // Exemple de valeurs d'idCategory, à ajuster selon vos catégories réelles
   },
   {
     id: 2,
@@ -19,7 +18,6 @@ export const BOOKS: Book[] = [
     createdAt: new Date(1998, 9, 16),
     updateAt: null,
     idUser: 2,
-    idCategory: [2, 3],
   },
   {
     id: 3,
@@ -29,7 +27,6 @@ export const BOOKS: Book[] = [
     createdAt: new Date(1998, 9, 16),
     updateAt: null,
     idUser: 2,
-    idCategory: [1, 3],
   },
   {
     id: 4,
@@ -39,7 +36,6 @@ export const BOOKS: Book[] = [
     createdAt: new Date(1998, 9, 16),
     updateAt: null,
     idUser: 3,
-    idCategory: [3, 4],
   },
   {
     id: 5,
@@ -49,6 +45,5 @@ export const BOOKS: Book[] = [
     createdAt: new Date(1998, 9, 16),
     updateAt: null,
     idUser: 4,
-    idCategory: [1, 4],
   },
 ];

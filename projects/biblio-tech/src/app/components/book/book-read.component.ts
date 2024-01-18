@@ -7,6 +7,7 @@ import { Book } from '../../models/book';
 import { BookService } from '../../services/book.service';
 import { ShareService } from '../../services/share.service';
 import { UserService } from '../../services/user.service';
+import { CategoryService } from '../../services/categories.service';
 
 @Component({
   selector: 'book-read-component',
@@ -18,6 +19,12 @@ import { UserService } from '../../services/user.service';
       <article>
         <p>Titre : {{ bookRead?.title }}</p>
         <p>Auteur : {{ authorName$ | async }} {{ authorFirstName$ | async }}</p>
+        <p>Catégories: {{ categoriesLabels$ | async }}</p>
+        <ul>
+          <li *ngFor="let label of categoriesLabels$ | async">
+            {{ label }}
+          </li>
+        </ul>
         <p>Résumé : {{ bookRead?.resume }}</p>
         <p>
           Date de création : {{ bookRead?.createdAt | date : 'dd MMMM yyyy ' }}
@@ -58,6 +65,7 @@ export class BookReadComponent implements OnInit {
   isLoggedIn$: Observable<boolean>; // Observable indiquant si l'utilisateur est connecté
   authorName$: Observable<string | null> = new Observable<string | null>(); // Observable contenant le nom de l'auteur
   authorFirstName$: Observable<string | null> = new Observable<string | null>(); // Observable contenant le prénom de l'auteur
+  categoriesLabels$: Observable<string[]> = new Observable<string[]>();
 
   @Input('value')
   book: Book | undefined; // Propriété d'entrée pour recevoir le livre à afficher
@@ -68,7 +76,8 @@ export class BookReadComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private shareService: ShareService,
-    private userService: UserService
+    private userService: UserService,
+    private categoryService: CategoryService
   ) {
     this.isLoggedIn$ = this.shareService.isLoggedIn$;
   }
@@ -100,6 +109,7 @@ export class BookReadComponent implements OnInit {
                     observer.complete();
                   }
                 );
+                this.GetLabelByIdCategory(this.book?.id || null);
               }
             });
         }
@@ -127,4 +137,21 @@ export class BookReadComponent implements OnInit {
       this.router.navigate(['/book/edit', bookId]);
     }
   }
+
+  GetLabelByIdCategory(idBook: number | null): void {
+    if (idBook !== null) {
+      this.categoryService.getLabelByIdCategory(idBook).subscribe(
+        (labels) => {
+          this.categoriesLabels$ = new Observable<string[]>((observer) => {
+            observer.next(labels);
+            observer.complete();
+          });
+        },
+        (error) => {
+          console.error('Error retrieving labels:', error);
+        }
+      );
+    }
+  }
+  
 }
