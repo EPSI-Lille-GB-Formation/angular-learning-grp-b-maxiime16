@@ -9,7 +9,7 @@ import { AuthComponent } from './components/authentification/auth.component';
   imports: [CommonModule, RouterOutlet, AuthComponent],
   template: `
     <div class="container">
-      <h1 class="titre_projet">Biblio'Tech - Angular app</h1>
+      <h1 class="titre_projet"></h1>
       <ng-container>
         <app-auth></app-auth>
       </ng-container>

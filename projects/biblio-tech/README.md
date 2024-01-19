@@ -10,8 +10,8 @@
 
 ## Choses a faire:
 ### Les livres
-- 🔄 Créer, modifier, supprimer, trier et consulter (CRUD)
-- 🔄 Seul l’auteur d’un livre doit pouvoir modifier et supprimer un livre
+- ✅ Créer, modifier, supprimer, trier et consulter (CRUD)
+- ✅ Seul l’auteur d’un livre doit pouvoir modifier et supprimer un livre
 - 🅾️ Un utilisateur administrateur doit pouvoir gérer l’ensemble des livres
 - ✅ Seul un utilisateur authentifié peut consulter un livre
 - ✅ Tout le monde doit pouvoir afficher la liste des livres

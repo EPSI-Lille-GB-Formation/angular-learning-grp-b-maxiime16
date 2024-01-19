@@ -11,31 +11,44 @@ import { UserService } from '../../services/user.service';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div>
-      <article>
-        <button *ngIf="!(isLoggedIn$ | async)" (click)="goToLoginPage()">
-          Se connecter
-        </button>
-        <div *ngIf="isLoggedIn$ | async" class="grid">
-          <div>
-            <p>
-              Vous êtes connecté, bonjour {{ currentUserName$ }}
-              {{ currentUserFirstName$ }}
-            </p>
-            <p>role: ({{ currentUserRole$ | async }})</p>
-          </div>
-          <div class="grid">
-            <button (click)="goToUserReadPage()">Voir profil</button>
-            <button *ngIf="(currentUserRole$ | async) === 'admin'">
-              Admin zone
-            </button>
-            <button (click)="logout()">Se déconnecter</button>
-          </div>
+    <article>
+      <nav *ngIf="!(isLoggedIn$ | async)" class="grid">
+        <ul>
+          <li>Biblio'Tech - Angular app</li>
+        </ul>
+        <ul>
+          <button (click)="goToLoginPage()" class="button">accueil</button>
+          <button (click)="goToLoginPage()"class="button">Se connecter</button>
+        </ul>
+      </nav>
+      <div *ngIf="isLoggedIn$ | async" class="grid">
+        <div>
+          <p>
+            Vous êtes connecté, bonjour {{ currentUserName$ }}
+            {{ currentUserFirstName$ }}
+          </p>
+          <p>role: ({{ currentUserRole$ | async }})</p>
         </div>
-      </article>
-    </div>
+        <div class="grid">
+          <button (click)="goToUserReadPage()">Voir profil</button>
+          <button *ngIf="(currentUserRole$ | async) === 'admin'">
+            Admin zone
+          </button>
+          <button (click)="logout()">Se déconnecter</button>
+        </div>
+      </div>
+    </article>
   `,
-  styles: [],
+  styles: [
+    `
+      .element-1 {
+        grid-column: 1 / 3;
+      }
+      .button{
+        margin-left:10px
+            }
+    `,
+  ],
 })
 export class AuthComponent implements OnInit {
   isLoggedIn$: Observable<boolean> = new Observable<boolean>();
@@ -59,13 +72,18 @@ export class AuthComponent implements OnInit {
     // Extraction de la valeur de l'observable
     this.currentUserId$.subscribe((userId: number | null) => {
       if (userId !== null) {
-        this.userService.getCurrentUserNameFromId(userId).subscribe(
-          (userName: string | null) => this.currentUserName$ = userName
-        );
+        this.userService
+          .getCurrentUserNameFromId(userId)
+          .subscribe(
+            (userName: string | null) => (this.currentUserName$ = userName)
+          );
 
-        this.userService.getCurrentUserFirstNameFromId(userId).subscribe(
-          (firstName: string | null) => this.currentUserFirstName$ = firstName
-        );
+        this.userService
+          .getCurrentUserFirstNameFromId(userId)
+          .subscribe(
+            (firstName: string | null) =>
+              (this.currentUserFirstName$ = firstName)
+          );
       }
     });
   }
@@ -89,6 +107,6 @@ export class AuthComponent implements OnInit {
     // Naviguer vers la page principale après la déconnexion avec un délai
     setTimeout(() => {
       this.router.navigate(['']);
-    }, 1500);
+    }, 1000);
   }
 }

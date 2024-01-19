@@ -14,12 +14,12 @@ import { FormsModule } from '@angular/forms';
     <h1>page test </h1>
     <div>      
       <label for="categorySelect">Sélectionnez une catégorie :</label>
-      <select id="categorySelect" [(ngModel)]="selectedCategory" (change)="getData()">
+      <select id="categorySelect" [(ngModel)]="selectedCategory" (change)="getIdBookByCategory()">
         <option value="">Tous les livres</option>
         <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
       </select>
 
-      <button (click)="getData()">Afficher les données</button>
+      <button (click)="getIdBookByCategory()">Afficher les données</button>
       
       <div *ngIf="selectedCategory && idBooks">
         <p>Liste des ID de livres pour la catégorie {{ selectedCategory }} :</p>
@@ -40,7 +40,7 @@ export class TestComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private belongsService: BelongsService,
-    private bookService: BookService  // Ajoutez le service BookService ici
+    private bookService: BookService 
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +49,7 @@ export class TestComponent implements OnInit {
     });
   }
 
-  getData() {
+  getIdBookByCategory() {
     if (this.selectedCategory === "") {
       this.bookService.getBooks().subscribe(books => {
         const idBooks = books.map(book => book.id);
