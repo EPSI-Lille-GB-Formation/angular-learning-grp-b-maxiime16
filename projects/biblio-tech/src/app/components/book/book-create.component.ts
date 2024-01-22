@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { ShareService } from '../../services/share.service';
 
 @Component({
   selector: 'book-create-component',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
   template: `
     <div>
       <button (click)="goToHomePage()">Retour</button>
@@ -61,7 +58,6 @@ import { ShareService } from '../../services/share.service';
   ],
 })
 export class BookCreateComponent implements OnInit {
-  // Initialisation du formulaire avec les champs titre et résumé
   bookForm: FormGroup = this.formBuilder.group({
     title: ['', Validators.required],
     resume: ['', Validators.required],
@@ -75,55 +71,46 @@ export class BookCreateComponent implements OnInit {
     private formBuilder: FormBuilder,
     private bookService: BookService,
     private router: Router,
-    private shared: ShareService,
+    private shared: ShareService
   ) {}
 
   ngOnInit() {}
 
-  // Fonction appelée lors de la soumission du formulaire
   onSubmit(): void {
     if (this.bookForm.valid) {
-      // Récupérer l'ID de l'utilisateur connecté depuis le service ShareService
-      const userId = this.shared.getCurrentUserId();
+      this.bookService.getLastBookId().subscribe((newBookId) => {
+        const newBook: Book = {
+          id: newBookId,
+          title: this.bookForm.value.title,
+          resume: this.bookForm.value.resume,
+          image: '',
+          createdAt: new Date(),
+          updateAt: null,
+          idUser: this.shared.getCurrentUserId(),
+        };
 
-      // Création d'un nouvel objet Book à partir des valeurs du formulaire
-      const newBook: Book = {
-        id: 0,
-        title: this.bookForm.value.title,
-        resume: this.bookForm.value.resume,
-        image: '',
-        createdAt: new Date(),
-        updateAt: null,
-        idUser: userId,
-      };
+        this.bookService.createBook(newBook).subscribe(
+          () => {
+            this.ajoutReussi = true;
+            this.erreurAjout = false;
+            this.erreurChampsVides = false;
 
-      // Appel du service pour créer un nouveau livre
-      this.bookService.createBook(newBook).subscribe(
-        () => {
-          // Gestion des résultats de l'ajout
-          this.ajoutReussi = true;
-          this.erreurAjout = false;
-          this.erreurChampsVides = false;
-
-          // Naviguer vers la liste des livres après l'ajout réussi avec un délai
-          setTimeout(() => {
-            this.router.navigate(['']);
-          }, 3000);
-        },
-        (error) => {
-          // Gestion de l'erreur lors de l'ajout
-          console.error(error);
-          this.ajoutReussi = false;
-          this.erreurAjout = true;
-        }
-      );
+            setTimeout(() => {
+              this.router.navigate(['']);
+            }, 3000);
+          },
+          (error) => {
+            console.error(error);
+            this.ajoutReussi = false;
+            this.erreurAjout = true;
+          }
+        );
+      });
     } else {
-      // Afficher un message d'erreur si des champs obligatoires sont vides
       this.erreurChampsVides = true;
     }
   }
 
-  // Fonction pour naviguer vers la page principale
   goToHomePage() {
     this.router.navigate(['']);
   }
