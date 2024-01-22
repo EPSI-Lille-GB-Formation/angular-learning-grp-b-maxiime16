@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -6,8 +7,8 @@ import { ReactiveFormsModule } from '@angular/forms';
       // ... vos composants
     ],
     imports: [
-      // ... d'autres modules
-      ReactiveFormsModule,  // Ajoutez ReactiveFormsModule ici
+        ReactiveFormsModule,
+        CommonModule,
     ],
   })
   export class AppModule { }
