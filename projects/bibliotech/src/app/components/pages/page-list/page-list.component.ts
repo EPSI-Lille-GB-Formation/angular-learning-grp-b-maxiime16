@@ -36,4 +36,8 @@ export class PageListComponent implements OnInit{
     })
   }
 
+  GoToPageCreatePage(){
+    const idBook = this.route.snapshot.paramMap.get('idBook');
+    this.router.navigate(['book',idBook,'create']);
+  }
 }

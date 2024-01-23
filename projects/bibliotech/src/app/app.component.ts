@@ -12,7 +12,9 @@ import { Router, RouterOutlet } from '@angular/router';
     <router-outlet></router-outlet>
   </div>
   ` ,
-  styles:[],
+  styles:[`
+
+  `],
 })
 export class AppComponent {
   title = 'bibliotech';

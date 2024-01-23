@@ -19,7 +19,7 @@ export const routes: Routes = [
     {path: 'book/update/:idBook', component: BookUpdateComponent},
     {path: 'book/delete/:idBook', component: BookDeleteComponent},
 
-    {path: 'book/page/create', component: PageCreateComponent},
+    {path: 'book/:idBook/create', component: PageCreateComponent},
     {path: 'book/:idBook/page/:idPage', component: PageReadComponent},
     {path: 'book/:idBook/page/update/:idPage', component: PageUpdateComponent},
     {path: 'book/:idBook/page/delete/:idPage', component: PageDeleteComponent},

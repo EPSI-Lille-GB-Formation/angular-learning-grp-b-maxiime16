@@ -1,13 +1,10 @@
 img {
-    width: 200px; /* Spécifiez la largeur souhaitée */
-    height: 300px; /* Spécifiez la hauteur souhaitée si nécessaire */
-    object-fit: cover; /* Assure que l'image remplit complètement sa boîte tout en conservant son ratio d'aspect */
-    margin-bottom: 10px;
-  }
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
 article {
-    width: calc(
-      50% - 20px
-    ); /* Chaque article occupe la moitié de la largeur avec une marge de 10px de chaque côté */
-    margin: 10px;
-    box-sizing: border-box; /* Assure que la largeur inclut la marge et le padding */
+  width: 100%;
 }

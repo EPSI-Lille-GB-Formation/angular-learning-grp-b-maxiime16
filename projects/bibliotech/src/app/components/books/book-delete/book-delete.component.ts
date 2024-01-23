@@ -23,13 +23,12 @@ export class BookDeleteComponent implements OnInit{
 
   ngOnInit(): void {
       const idBook = this.route.snapshot.paramMap.get('idBook');
-      console.log('id book to delete: ',idBook);
+      console.log('idBook à supprimer: ',idBook);
 
       if (idBook) {
         this.bookService.getBookById(+idBook).subscribe(
           (book: Book | undefined) => {
             this.book = book;
-            console.log('Informations du livre:', this.book);
           },
           (error) => {
             console.error(error);

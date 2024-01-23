@@ -2,8 +2,8 @@
     <div>
         <button (click)="GoToBookCreatePage()">Ajouter un livre ⊕</button>
     </div>
-    <div>
-        <h2>Liste des livres: </h2>
+    <h2>Liste des livres: </h2>
+    <div class="listBook">
         <ng-container *ngFor="let book of bookList | async">
             <app-book [value]="book"></app-book>
         </ng-container>

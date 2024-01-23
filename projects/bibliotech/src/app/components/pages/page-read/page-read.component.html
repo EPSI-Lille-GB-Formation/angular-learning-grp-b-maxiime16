@@ -1,6 +1,6 @@
 <div class="grid">
-    <button>Modifier</button>
-    <button>Supprimer</button>
+    <button (click)="GoToPageUpdatePage()">Modifier</button>
+    <button (click)="GoToPageDeletePage()">Supprimer</button>
 </div>
 <div>
     <h2>Informations sur la page:</h2>
@@ -17,5 +17,5 @@
     </article>
 </div>
 <div>
-    <button>Retour au livre</button>
+    <button (click)="cancelButton()">Retour au livre</button>
 </div>

@@ -1,1 +1,24 @@
-<p>page-create works!</p>
+<div>
+    <h2>Créer un nouveau livre</h2>
+
+    <form [formGroup]="pageForm" (ngSubmit)="onSubmit()">
+        <div>
+            <label for="title">Titre:</label>
+            <input type="text" id="title" formControlName="title" required>
+        </div>
+
+        <div>
+            <label for="content">Contenu:</label>
+            <textarea id="content" formControlName="content" required></textarea>
+        </div>
+        <article>
+            <div *ngIf="ajoutReussi" class="success-message">
+                L'ajout a réussi !
+            </div>
+        </article>
+        <div>
+            <button type="submit" [disabled]="!pageForm.valid">Créer le livre</button>
+            <button (click)="cancelButton()">Annuler</button>
+        </div>
+    </form>
+</div>

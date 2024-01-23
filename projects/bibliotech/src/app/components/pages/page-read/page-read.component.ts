@@ -36,4 +36,21 @@ export class PageReadComponent implements OnInit {
       );
     }
   }
+
+  cancelButton(): void{
+    const idBook = this.route.snapshot.paramMap.get('idBook');
+    this.router.navigate(['book', idBook])
+  }
+
+  GoToPageUpdatePage(){
+    const idBook = this.route.snapshot.paramMap.get('idBook');
+    const idPage = this.route.snapshot.paramMap.get('idPage');
+    this.router.navigate(['book', idBook,'page','update',idPage])
+  }
+
+  GoToPageDeletePage(){
+    const idBook = this.route.snapshot.paramMap.get('idBook');
+    const idPage = this.route.snapshot.paramMap.get('idPage');
+    this.router.navigate(['book', idBook,'page','delete',idPage])
+  }
 }

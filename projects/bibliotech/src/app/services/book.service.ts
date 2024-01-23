@@ -11,11 +11,7 @@ export class BookService {
 
   apiURL: string = 'api/books';
 
-  constructor(
-    private http: HttpClient,
-  ) { }
-
-
+  constructor(private http: HttpClient,) { }
 
   // méthode pour récupérer la liste des livres
   getBooks(): Observable<Book[]> {
@@ -48,6 +44,7 @@ export class BookService {
       .put(url, book, httpOptions)
   }
 
+  // méthode pour supprimer un livre
   deleteBook(bookId: number): Observable<void> {
     const URL = `${this.apiURL}/${bookId}`;
     return this.http.delete<void>(URL);

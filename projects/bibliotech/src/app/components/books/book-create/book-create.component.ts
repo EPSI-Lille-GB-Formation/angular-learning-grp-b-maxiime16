@@ -41,7 +41,7 @@ export class BookCreateComponent {
             image: this.bookForm.get('image')?.value,
             createdAt: new Date(),
             updateAt: null,
-            idUser: 1, // Exemple d'ID utilisateur à remplir
+            idUser: 1, // A changer
           };
   
           this.bookService.createBook(newBook).subscribe(
