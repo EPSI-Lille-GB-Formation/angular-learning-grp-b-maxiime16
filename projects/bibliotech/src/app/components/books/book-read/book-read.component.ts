@@ -48,8 +48,8 @@ export class BookReadComponent implements OnInit {
   GoToDeletePage(idBook: number | undefined):void {
     this.router.navigate(['book/delete',idBook]);
   }
-  GoToEditPage(idBook: number | undefined):void {
-    this.router.navigate(['book/edit',idBook]);
+  GoToUpdatePage(idBook: number | undefined):void {
+    this.router.navigate(['book/update',idBook]);
   }
 
 }

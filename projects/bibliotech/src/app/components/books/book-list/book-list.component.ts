@@ -33,4 +33,5 @@ export class BookListComponent implements OnInit{
   GoToBookCreatePage(){
     this.router.navigate(['/book/create']);
   }
+
 }

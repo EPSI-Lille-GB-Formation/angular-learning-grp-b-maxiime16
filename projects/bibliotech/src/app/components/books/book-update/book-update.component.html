@@ -1,1 +1,48 @@
-<p>book-update works!</p>
+<div>
+    <h2>Modifier le livre</h2>
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+      <article class="grid">
+        <div>
+          <h3>Informations actuelles:</h3>
+          <img [src]="book?.image"/>
+          <label>Titre: {{ book?.title }}</label>
+          <label>Résumé: {{ book?.resume }}</label>
+          <label>
+            Date de création: {{ book?.createdAt | date : 'dd MMMM yyyy ' }}
+          </label>
+          <label>
+            Dernière mise à jour:
+            {{ book?.updateAt | date : 'dd MMMM yyyy h:mm' }}
+          </label>
+        </div>
+
+        <div>
+          <h3>Modifications:</h3>
+          <div>
+            <label for="title">Titre:</label>
+            <input type="text" formControlName="title" required />
+          </div>
+          <div>
+            <label for="image">Url image:</label>
+            <input type="text" formControlName="image" required />
+          </div>
+          <div>
+            <label for="resume">Résumé:</label>
+            <textarea formControlName="resume" required></textarea>
+          </div>
+        </div>
+      </article>
+      <!--
+      <div *ngIf="erreurChampsVides" class="error-message">
+        Veuillez remplir tous les champs.
+      </div>
+      <div *ngIf="modifReussi" class="success-message">
+        L'ajout a réussi !
+      </div>
+      <div *ngIf="erreurAjout" class="error-message">L'ajout a échoué.</div>
+      -->
+
+      <button type="submit">Mettre à jour</button>
+    </form>
+    <button (click)="cancelButton(book?.id)">Annuler</button>
+  </div>

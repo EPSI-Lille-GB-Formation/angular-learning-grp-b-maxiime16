@@ -1,1 +1,30 @@
-<p>book-create works!</p>
+<div>
+    <h2>Créer un nouveau livre</h2>
+
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+        <div>
+            <label for="title">Titre:</label>
+            <input type="text" id="title" formControlName="title" required>
+        </div>
+
+        <div>
+            <label for="resume">Résumé:</label>
+            <textarea id="resume" formControlName="resume" required></textarea>
+        </div>
+
+        <div>
+            <label for="image">Image:</label>
+            <input type="text" id="image" formControlName="image" placeholder="Url de l'image" required>
+        </div>
+
+        <article>
+            <div *ngIf="ajoutReussi" class="success-message">
+                L'ajout a réussi !
+            </div>
+        </article>
+        <div>
+            <button type="submit" [disabled]="!bookForm.valid">Créer le livre</button>
+            <button type="button" (click)="goToHomePage()">Annuler</button>
+        </div>
+    </form>
+</div>
