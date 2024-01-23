@@ -1,1 +1,21 @@
-<p>page-read works!</p>
+<div class="grid">
+    <button>Modifier</button>
+    <button>Supprimer</button>
+</div>
+<div>
+    <h2>Informations sur la page:</h2>
+    <article>
+        <div>
+            <label>Titre: {{pageRead?.title}}</label>
+            <label>Date de création: {{pageRead?.createdAt | date: 'dd MMMM yyyy'}}</label>
+            <label>Dernière mise à jour: {{pageRead?.updatedAt | date: 'dd MMMM yyyy'}}</label>
+        </div>
+    </article>
+    <article>
+        <label>Contenu:</label>
+        <p>{{pageRead?.content}}</p>
+    </article>
+</div>
+<div>
+    <button>Retour au livre</button>
+</div>

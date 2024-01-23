@@ -21,7 +21,7 @@ export class PageComponent {
   page: Page | undefined;
 
   GoToDetailsPagePage(idBook: number, idPage: number):void {
-    this.router.navigate(['book/', idBook, '/page/,', idPage]);
+    this.router.navigate(['book', idBook, 'page', idPage]);
   }
 
 }

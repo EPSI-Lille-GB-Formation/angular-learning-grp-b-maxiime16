@@ -1,15 +1,11 @@
 <article *ngIf="page">
     <div class="grid">
         <div>
-            <label>Titre: </label>
-            <label>Auteur: </label>
-            <label>Catégories: </label>
-            <ul>
-                <li></li>
-            </ul>
+            <label>Titre: {{page.title}}</label>
+            <label>Date d'ajout: {{page.createdAt | date: 'dd MMMM yyyy'}}</label>
         </div>
     </div>
     <div>
-        <button>Voir détails</button>
+        <button (click)="GoToDetailsPagePage(page.idBook, page.id)">Voir plus</button>
     </div>
 </article>

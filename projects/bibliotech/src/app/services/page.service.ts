@@ -20,5 +20,8 @@ export class PageService {
     return this.http.get<Page[]>(url);
   }
 
-  
+  getPageById(id:number): Observable<Page | undefined>{
+    const URL = `${this.apiURL}/${id}`;
+    return this.http.get<Page | undefined>(URL);
+  }
 }

@@ -1,6 +1,6 @@
 // book-read.component.ts
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Book } from '../../../models/book';
@@ -16,9 +16,6 @@ import { PageListComponent } from '../../pages/page-list/page-list.component';
 })
 export class BookReadComponent implements OnInit {
   bookRead: Book | undefined;
-
-  @Input('value')
-  book: Book | undefined;
 
   constructor(
     private bookService: BookService,
