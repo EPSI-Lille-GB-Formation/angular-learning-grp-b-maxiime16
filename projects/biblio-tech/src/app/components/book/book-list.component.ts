@@ -35,7 +35,6 @@ import { BelongsService } from '../../services/belongs.service';
     </p>
     <div>
       <button
-        *ngIf="isLoggedIn$ | async"
         (click)="goToBookCreatePage()"
         class="add-button"
       >
@@ -93,6 +92,10 @@ export class BookListComponent implements OnInit {
     });
     this.selectedCategory = '';
     this.isLoggedIn$ = this.shared.isLoggedIn$;
+
+    this.bookList$.subscribe((books) => {
+      console.log('Liste des livres:', books);
+    });
   }
 
   goToBookCreatePage() {

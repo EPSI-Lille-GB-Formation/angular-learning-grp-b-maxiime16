@@ -1,0 +1,15 @@
+.listBook {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.add-button {
+    background-color: green;
+    border: green;
+}
+
+.add-button:hover {
+    background-color: darkgreen;
+    border: darkgreen;
+}

@@ -16,13 +16,19 @@ export class BookService {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<Book | undefined>(url);
   }
+  
   getLastBookId(): Observable<number> {
     const url = `${this.apiUrl}`;
     return this.http.get<any[]>(url).pipe(
       map((books) => {
         if (books && books.length > 0) {
-          // Si la liste des livres n'est pas vide, récupérez le plus grand ID et ajoutez 1
-          const maxId = Math.max(...books.map((book) => book.id));
+          // Utilisez une boucle pour trouver le maximum
+          let maxId = books[0].id;
+          for (const book of books) {
+            if (book.id > maxId) {
+              maxId = book.id;
+            }
+          }
           return maxId + 1;
         } else {
           // Si la liste des livres est vide, retournez simplement 1 comme le premier ID
@@ -34,7 +40,7 @@ export class BookService {
         return throwError(error);
       })
     );
-  }
+  }  
 
   // méthode pour récupérer la liste des livres
   getBooks(): Observable<Book[]> {

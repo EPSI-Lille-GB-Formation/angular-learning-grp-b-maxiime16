@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ShareService } from '../../services/share.service';
 import { CategoryService } from '../../services/categories.service';
+import { InMemoryDataService } from '../../services/in-memory-data.service';
 
 @Component({
   selector: 'book-create-component',
@@ -90,6 +91,7 @@ export class BookCreateComponent implements OnInit {
     private router: Router,
     private shared: ShareService,
     private categoryService: CategoryService,
+    private IMDS: InMemoryDataService,
   ) {}
 
   ngOnInit() {}
@@ -97,47 +99,39 @@ export class BookCreateComponent implements OnInit {
   // Fonction appelée lors de la soumission du formulaire
   onSubmit(): void {
     if (this.bookForm.valid) {
-      // Récupérer l'ID de l'utilisateur connecté depuis le service ShareService
-      const userId = this.shared.getCurrentUserId();
+      this.bookService.getLastBookId().subscribe((newBookId) => {
+        const newBook: Book = {
+          id: 1,
+          title: this.bookForm.value.title,
+          resume: this.bookForm.value.resume,
+          image: '',
+          createdAt: new Date(),
+          updateAt: null,
+          idUser: this.shared.getCurrentUserId(),
+        };
 
-      // Création d'un nouvel objet Book à partir des valeurs du formulaire
-      const newBook: Book = {
-        id: 0,
-        title: this.bookForm.value.title,
-        resume: this.bookForm.value.resume,
-        image: '',
-        createdAt: new Date(),
-        updateAt: null,
-        idUser: userId,
-      };
+        this.bookService.createBook(newBook).subscribe(
+          () => {
+            this.ajoutReussi = true;
+            this.erreurAjout = false;
+            this.erreurChampsVides = false;
 
-      // Appel du service pour créer un nouveau livre
-      this.bookService.createBook(newBook).subscribe(
-        () => {
-          // Gestion des résultats de l'ajout
-          this.ajoutReussi = true;
-          this.erreurAjout = false;
-          this.erreurChampsVides = false;
-
-          // Naviguer vers la liste des livres après l'ajout réussi avec un délai
-          setTimeout(() => {
-            this.router.navigate(['']);
-          }, 3000);
-        },
-        (error) => {
-          // Gestion de l'erreur lors de l'ajout
-          console.error(error);
-          this.ajoutReussi = false;
-          this.erreurAjout = true;
-        }
-      );
+            setTimeout(() => {
+              this.router.navigate(['']);
+            }, 3000);
+          },
+          (error) => {
+            console.error(error);
+            this.ajoutReussi = false;
+            this.erreurAjout = true;
+          }
+        );
+      });
     } else {
-      // Afficher un message d'erreur si des champs obligatoires sont vides
       this.erreurChampsVides = true;
     }
   }
 
-  // Fonction pour naviguer vers la page principale
   goToHomePage() {
     this.router.navigate(['']);
   }

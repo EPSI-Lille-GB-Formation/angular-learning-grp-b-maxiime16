@@ -1,0 +1,28 @@
+<div class="grid">
+    <button (click)="GoToEditPage(bookRead?.id)">Modifier</button>
+    <button (click)="GoToDeletePage(bookRead?.id)">Supprimer</button>
+</div>
+<div>
+    <h2>Informations sur le livre:</h2>
+    <article>
+        <div class="grid">
+            <div>
+                <img [src]="bookRead?.image"/>
+            </div>
+            <div>
+                <label>Titre: {{bookRead?.title}}</label>
+                <label>Auteur: </label>
+                <label>Catégories: </label>
+                <ul>
+                    <li></li>
+                </ul>
+                <label>Date de création: {{bookRead?.createdAt | date: 'dd MMMM yyyy'}}</label>
+                <label>Dernière mise à jour: {{bookRead?.updateAt | date: 'dd MMMM yyyy'}}</label>
+            </div>
+        </div>
+        <label>Résumé: {{bookRead?.resume}}</label>
+    </article>
+</div>
+<div>
+    <h2>Listes des pages: </h2>
+</div>

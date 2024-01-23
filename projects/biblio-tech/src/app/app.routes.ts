@@ -17,8 +17,11 @@ export const routes: Routes = [
     //{path: 'book/:id', component: BookReadComponent, canActivate: [AuthGuard]},
     {path: 'book/:id', component: BookReadComponent},
 
-    {path: 'book/delete/:id', component: BookDeleteComponent, canActivate: [AuthGuard]},
-    {path: 'add-book', component: BookCreateComponent, canActivate: [AuthGuard]},
+    {path: 'book/delete/:id', component: BookDeleteComponent},
+
+    //{path: 'add-book', component: BookCreateComponent, canActivate: [AuthGuard]},
+    {path: 'add-book', component: BookCreateComponent},
+
     {path: 'book/edit/:id', component:BookEditComponent, canActivate: [AuthGuard]},
     {path: 'login', component:AuthLoginComponent},
 
