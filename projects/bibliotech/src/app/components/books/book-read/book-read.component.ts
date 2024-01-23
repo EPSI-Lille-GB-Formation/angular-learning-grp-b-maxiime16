@@ -1,17 +1,18 @@
+// book-read.component.ts
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
 
 import { Book } from '../../../models/book';
 import { BookService } from '../../../services/book.service';
+import { PageListComponent } from '../../pages/page-list/page-list.component';
 
 @Component({
   selector: 'app-book-read',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PageListComponent],
   templateUrl: './book-read.component.html',
-  styleUrl: './book-read.component.css',
+  styleUrls: ['./book-read.component.css'],
 })
 export class BookReadComponent implements OnInit {
   bookRead: Book | undefined;
@@ -26,7 +27,7 @@ export class BookReadComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const bookId = this.route.snapshot.paramMap.get('id');
+    const bookId = this.route.snapshot.paramMap.get('idBook');
 
     if (bookId) {
       this.bookService.getBookById(+bookId).subscribe(
@@ -41,15 +42,14 @@ export class BookReadComponent implements OnInit {
           );
         }
       );
-
-    }    
+    }
   }
 
-  GoToDeletePage(idBook: number | undefined):void {
-    this.router.navigate(['book/delete',idBook]);
-  }
-  GoToUpdatePage(idBook: number | undefined):void {
-    this.router.navigate(['book/update',idBook]);
+  GoToDeletePage(idBook: number | undefined): void {
+    this.router.navigate(['book/delete', idBook]);
   }
 
+  GoToUpdatePage(idBook: number | undefined): void {
+    this.router.navigate(['book/update', idBook]);
+  }
 }

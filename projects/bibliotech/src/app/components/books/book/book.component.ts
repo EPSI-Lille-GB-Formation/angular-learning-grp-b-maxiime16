@@ -8,27 +8,7 @@ import { Book } from '../../../models/book';
   selector: 'app-book',
   standalone: true,
   imports: [CommonModule],
-  template:`
-  <article *ngIf="book">
-    <div class="grid">
-        <div>
-            <img [src]="book.image"/>
-        </div>
-        <div>
-            <label>Titre: {{book.title}}</label>
-            <label>Auteur: </label>
-            <label>Catégories: </label>
-            <ul>
-                <li></li>
-            </ul>
-        </div>
-    </div>
-    <div>
-        <button (click)="GoToDetailsBookPage(book.id)">Voir détails</button>
-    </div>
-</article>
-
-  `,
+  templateUrl: './book.component.html',
   styleUrl: './book.component.css'
 })
 export class BookComponent{

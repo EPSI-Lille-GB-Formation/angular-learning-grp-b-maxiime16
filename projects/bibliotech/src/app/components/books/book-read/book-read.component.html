@@ -7,7 +7,7 @@
     <article>
         <div class="grid">
             <div>
-                <img [src]="bookRead?.image"/>
+                <img [src]="bookRead?.image" />
             </div>
             <div>
                 <label>Titre: {{bookRead?.title}}</label>
@@ -23,6 +23,9 @@
         <label>Résumé: {{bookRead?.resume}}</label>
     </article>
 </div>
+<!-- Affichage de la liste des pages -->
 <div>
-    <h2>Listes des pages: </h2>
+    <ng-container>
+        <app-page-list></app-page-list>
+    </ng-container>
 </div>
