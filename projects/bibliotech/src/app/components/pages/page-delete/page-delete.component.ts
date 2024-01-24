@@ -15,6 +15,9 @@ import { Page } from '../../../models/page';
 export class PageDeleteComponent implements OnInit {
   page: Page | undefined;
 
+  deleteSuccess: boolean = false;
+  deleteError: boolean = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -42,6 +45,8 @@ export class PageDeleteComponent implements OnInit {
       this.pageService.deletePage(this.page.id).subscribe(
         () => {
           console.log('Page supprimé ! Retour a la page du livre');
+          this.deleteSuccess = true;
+          this.deleteError = false;
 
           setTimeout(() => {
             const idBook = this.route.snapshot.paramMap.get('idBook');
@@ -50,6 +55,8 @@ export class PageDeleteComponent implements OnInit {
         },
         (error) => {
           console.error(error);
+          this.deleteSuccess = false;
+          this.deleteError = true;
         }
       );
     }

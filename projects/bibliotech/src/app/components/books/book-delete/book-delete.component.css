@@ -1,0 +1,17 @@
+.success-message {
+    color: green;
+}
+
+.error-message {
+    color: red;
+}
+
+.delete-button {
+    background-color: red;
+    border: black;
+}
+
+.delete-button:hover {
+    background-color: darkred;
+    border: black;
+}

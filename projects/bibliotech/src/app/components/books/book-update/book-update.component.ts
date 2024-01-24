@@ -21,10 +21,13 @@ import { Book } from '../../../models/book';
 export class BookUpdateComponent implements OnInit {
   book: Book | undefined;
 
+  modifReussi: boolean = false;
+  erreurAjout: boolean = false;
+
   bookForm: FormGroup = this.formBuilder.group({
-    title: ['', Validators.required],
-    resume: ['', Validators.required],
-    image: ['', Validators.required],
+    title: [''],
+    resume: [''],
+    image: [''],
   });
 
   constructor(
@@ -48,15 +51,26 @@ export class BookUpdateComponent implements OnInit {
     if (this.bookForm.valid) {
       const updatedBook: Book = {
         ...this.book!,
-        title: this.bookForm.value.title,
-        resume: this.bookForm.value.resume,
-        image: this.bookForm.value.image,
+        title:
+          this.bookForm.value.title !== ''
+            ? this.bookForm.value.title
+            : this.book!.title,
+        resume:
+          this.bookForm.value.resume !== ''
+            ? this.bookForm.value.resume
+            : this.book!.resume,
+        image:
+          this.bookForm.value.image !== ''
+            ? this.bookForm.value.image
+            : this.book!.image,
         updateAt: new Date(),
       };
 
       this.bookService.updateBook(updatedBook).subscribe(
         () => {
           console.log("Livre mis à jour! Retour a la page d'accueil");
+          this.modifReussi = true;
+          this.erreurAjout = false;
 
           setTimeout(() => {
             const idBook = this.route.snapshot.paramMap.get('idBook');
@@ -65,6 +79,8 @@ export class BookUpdateComponent implements OnInit {
         },
         (error) => {
           console.error(error);
+          this.modifReussi = false;
+          this.erreurAjout = true;
         }
       );
     }

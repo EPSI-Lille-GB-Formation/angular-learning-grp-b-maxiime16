@@ -17,11 +17,13 @@
             <input type="text" id="image" formControlName="image" placeholder="Url de l'image" required>
         </div>
 
-        <article>
-            <div *ngIf="ajoutReussi" class="success-message">
-                L'ajout a réussi !
-            </div>
-        </article>
+        <div *ngIf="ajoutReussi" class="success-message">
+            L'ajout a réussi !
+        </div>
+        <div *ngIf="ajoutError" class="error-message">
+            L'ajout n'a pas réussi !
+        </div>
+
         <div>
             <button type="submit" [disabled]="!bookForm.valid">Créer le livre</button>
             <button type="button" (click)="goToHomePage()">Annuler</button>

@@ -1,14 +1,12 @@
 <div>
   <h2>Supprimer la page</h2>
   <p>Êtes-vous sûr de vouloir supprimer la page "{{page?.title}} " ?</p>
-  <!--
-      <div *ngIf="deleteSuccess" class="success-message">
-        La suppression a réussi !
-      </div>
-      <div *ngIf="deleteError" class="error-message">
-        La suppression a échoué.
-      </div>
-    -->
+  <div *ngIf="deleteSuccess" class="success-message">
+    La suppression a réussi !
+  </div>
+  <div *ngIf="deleteError" class="error-message">
+    La suppression a échoué.
+  </div>
   <div class="grid">
     <button (click)="deletePage()" class="delete-button">
       Supprimer définitivement

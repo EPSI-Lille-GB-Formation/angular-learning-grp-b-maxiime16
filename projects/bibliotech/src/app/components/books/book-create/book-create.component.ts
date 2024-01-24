@@ -18,8 +18,10 @@ import { BookService } from '../../../services/book.service';
   templateUrl: './book-create.component.html',
   styleUrl: './book-create.component.css',
 })
+
 export class BookCreateComponent {
   ajoutReussi: boolean = false;
+  ajoutError: boolean = false;
 
   bookForm: FormGroup = this.formBuilder.group({
     title: ['', Validators.required],
@@ -50,6 +52,7 @@ export class BookCreateComponent {
           this.bookService.createBook(newBook).subscribe(
             (createdBook: Book) => {
               this.ajoutReussi = true;
+              this.ajoutError = false;
               console.log('Book créé avec succés:', createdBook);
 
               setTimeout(() => {
@@ -59,6 +62,7 @@ export class BookCreateComponent {
             (error: any) => {
               console.error(error);
               this.ajoutReussi = false;
+              this.ajoutError = true;
             }
           );
         },

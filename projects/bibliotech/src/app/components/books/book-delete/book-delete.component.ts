@@ -15,6 +15,9 @@ import { BookService } from '../../../services/book.service';
 export class BookDeleteComponent implements OnInit {
   book: Book | undefined;
 
+  deleteSuccess: boolean = false;
+  deleteError: boolean = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -42,6 +45,8 @@ export class BookDeleteComponent implements OnInit {
       this.bookService.deleteBook(this.book.id).subscribe(
         () => {
           console.log("Livre supprimé ! Retour a la page d'accueil");
+          this.deleteSuccess = true;
+          this.deleteError = false;
 
           setTimeout(() => {
             this.router.navigate(['']);
@@ -49,6 +54,8 @@ export class BookDeleteComponent implements OnInit {
         },
         (error) => {
           console.error(error);
+          this.deleteSuccess = false;
+          this.deleteError = true;
         }
       );
     }

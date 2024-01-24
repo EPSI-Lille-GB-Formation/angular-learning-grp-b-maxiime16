@@ -20,6 +20,7 @@ import { PageService } from '../../../services/page.service';
 })
 export class PageCreateComponent {
   ajoutReussi: boolean = false;
+  ajoutError: boolean = false;
 
   constructor(
     private pageService: PageService,
@@ -53,6 +54,7 @@ export class PageCreateComponent {
             .createPage(newPage)
             .subscribe((createdPage: Page) => {
               this.ajoutReussi = true;
+              this.ajoutError = false;
               console.log('Page créé avec succés: ', createdPage);
 
               setTimeout(() => {
@@ -63,6 +65,8 @@ export class PageCreateComponent {
         },
         (error: any) => {
           console.error(error);
+          this.ajoutReussi = false;
+          this.ajoutError = true;
         }
       );
     }

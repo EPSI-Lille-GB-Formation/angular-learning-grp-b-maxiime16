@@ -21,6 +21,9 @@ import { PageService } from '../../../services/page.service';
 export class PageUpdateComponent implements OnInit {
   page: Page | undefined;
 
+  modifReussi: boolean = false;
+  erreurAjout: boolean = false;
+
   pageForm: FormGroup = this.formBuilder.group({
     title: ['', Validators.required],
     content: ['', Validators.required],
@@ -47,8 +50,14 @@ export class PageUpdateComponent implements OnInit {
     if (this.pageForm.valid) {
       const updatedPage: Page = {
         ...this.page!,
-        title: this.pageForm.value.title,
-        content: this.pageForm.value.content,
+        title:
+          this.pageForm.value.title !== ''
+            ? this.pageForm.value.title
+            : this.page!.title,
+        content:
+          this.pageForm.value.content !== ''
+            ? this.pageForm.value.content
+            : this.page!.content,
         updatedAt: new Date(),
       };
 
