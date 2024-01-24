@@ -1,12 +1,12 @@
 <!-- page-list.component.html -->
 <div>
-  <div>
-      <button (click)="GoToPageCreatePage()">Ajouter une page ⊕</button>
-  </div>
-  <div>
-      <h2>Liste des pages: </h2>
-      <ng-container *ngFor="let page of pageList | async">
-          <app-page [value]="page"></app-page>
-      </ng-container>
-  </div>
+    <div>
+        <button (click)="GoToPageCreatePage()">Ajouter une page ⊕</button>
+    </div>
+    <div>
+        <h2>Liste des pages: </h2>
+        <ng-container *ngFor="let page of pageList | async">
+            <app-page [value]="page"></app-page>
+        </ng-container>
+    </div>
 </div>

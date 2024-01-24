@@ -1,1 +1,43 @@
-<p>page-update works!</p>
+<div>
+    <h2>Modifier la page</h2>
+    <form [formGroup]="pageForm" (ngSubmit)="onSubmit()">
+        <article>
+            <div>
+                <h3>Informations actuelles:</h3>
+                <label>Titre: {{ page?.title }}</label>
+                <label>Contenu: {{ page?.content }}</label>
+                <label>
+                    Date de création: {{ page?.createdAt | date : 'dd MMMM yyyy ' }}
+                </label>
+                <label>
+                    Dernière mise à jour:
+                    {{ page?.updatedAt | date : 'dd MMMM yyyy h:mm' }}
+                </label>
+            </div>
+
+            <div>
+                <h3>Modifications:</h3>
+                <div>
+                    <label for="title">Titre:</label>
+                    <input type="text" formControlName="title" required />
+                </div>
+                <div>
+                    <label for="content">Résumé:</label>
+                    <textarea formControlName="content" required></textarea>
+                </div>
+            </div>
+        </article>
+        <!--
+        <div *ngIf="erreurChampsVides" class="error-message">
+          Veuillez remplir tous les champs.
+        </div>
+        <div *ngIf="modifReussi" class="success-message">
+          L'ajout a réussi !
+        </div>
+        <div *ngIf="erreurAjout" class="error-message">L'ajout a échoué.</div>
+        -->
+
+        <button type="submit">Mettre à jour</button>
+    </form>
+    <button (click)="cancelButton()">Annuler</button>
+</div>

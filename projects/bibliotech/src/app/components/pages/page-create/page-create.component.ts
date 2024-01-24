@@ -67,9 +67,9 @@ export class PageCreateComponent {
       );
     }
   }
-  cancelButton(){
+  cancelButton() {
     const idBook = this.route.snapshot.paramMap.get('idBook');
     const idPage = this.route.snapshot.paramMap.get('idPage');
-    this.router.navigate(['book', idBook,'page',idPage])
+    this.router.navigate(['book', idBook, 'page', idPage]);
   }
 }

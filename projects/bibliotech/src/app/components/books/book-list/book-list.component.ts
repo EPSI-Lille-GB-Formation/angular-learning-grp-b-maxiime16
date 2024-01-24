@@ -12,26 +12,21 @@ import { BookService } from '../../../services/book.service';
   standalone: true,
   imports: [CommonModule, BookComponent],
   templateUrl: './book-list.component.html',
-  styleUrl: './book-list.component.css'
+  styleUrl: './book-list.component.css',
 })
-export class BookListComponent implements OnInit{
-
+export class BookListComponent implements OnInit {
   bookList: Observable<Book[]> = new Observable<Book[]>();
 
-  constructor(
-    private router: Router,
-    private bookService: BookService,
-  ){}
+  constructor(private router: Router, private bookService: BookService) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.bookList = this.bookService.getBooks();
-    this.bookList.subscribe((books) =>{
-      console.log('Liste des livres:', books)
-    })
+    this.bookList.subscribe((books) => {
+      console.log('Liste des livres:', books);
+    });
   }
 
-  GoToBookCreatePage(){
+  GoToBookCreatePage() {
     this.router.navigate(['/book/create']);
   }
-
 }

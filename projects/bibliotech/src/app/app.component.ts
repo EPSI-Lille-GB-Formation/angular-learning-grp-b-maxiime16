@@ -6,25 +6,20 @@ import { Router, RouterOutlet } from '@angular/router';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet],
-  template:`
-  <div class="container">
-    <button (click)="GoToHomePage()">Accueil</button>
-    <router-outlet></router-outlet>
-  </div>
-  ` ,
-  styles:[`
-
-  `],
+  template: `
+    <div class="container">
+      <button (click)="GoToHomePage()">Accueil</button>
+      <router-outlet></router-outlet>
+    </div>
+  `,
+  styles: [``],
 })
 export class AppComponent {
   title = 'bibliotech';
 
-  constructor(
-    private router: Router,
-  ){}
+  constructor(private router: Router) {}
 
-  GoToHomePage(){
+  GoToHomePage() {
     this.router.navigate(['']);
   }
-  
 }

@@ -12,15 +12,15 @@ import { PageUpdateComponent } from './components/pages/page-update/page-update.
 import { PageDeleteComponent } from './components/pages/page-delete/page-delete.component';
 
 export const routes: Routes = [
-    {path: '', component: BookListComponent},
-    
-    {path: 'book/create', component: BookCreateComponent},
-    {path: 'book/:idBook', component: BookReadComponent},
-    {path: 'book/update/:idBook', component: BookUpdateComponent},
-    {path: 'book/delete/:idBook', component: BookDeleteComponent},
+  { path: '', component: BookListComponent },
 
-    {path: 'book/:idBook/create', component: PageCreateComponent},
-    {path: 'book/:idBook/page/:idPage', component: PageReadComponent},
-    {path: 'book/:idBook/page/update/:idPage', component: PageUpdateComponent},
-    {path: 'book/:idBook/page/delete/:idPage', component: PageDeleteComponent},
+  { path: 'book/create', component: BookCreateComponent },
+  { path: 'book/:idBook', component: BookReadComponent },
+  { path: 'book/update/:idBook', component: BookUpdateComponent },
+  { path: 'book/delete/:idBook', component: BookDeleteComponent },
+
+  { path: 'book/:idBook/create', component: PageCreateComponent },
+  { path: 'book/:idBook/page/:idPage', component: PageReadComponent },
+  { path: 'book/:idBook/page/update/:idPage', component: PageUpdateComponent },
+  { path: 'book/:idBook/page/delete/:idPage', component: PageDeleteComponent },
 ];

@@ -42,7 +42,7 @@ export class PageService {
   }
 
   // méthode pour update un livre
-  updateBook(page: Page): Observable<any> {
+  updatePage(page: Page): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };

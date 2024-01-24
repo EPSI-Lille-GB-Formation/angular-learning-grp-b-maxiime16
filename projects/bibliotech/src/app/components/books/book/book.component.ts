@@ -9,18 +9,15 @@ import { Book } from '../../../models/book';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './book.component.html',
-  styleUrl: './book.component.css'
+  styleUrl: './book.component.css',
 })
-export class BookComponent{
+export class BookComponent {
+  constructor(private router: Router) {}
 
-  constructor(
-    private router: Router,
-  ){ }
-
-  @Input("value")
+  @Input('value')
   book: Book | undefined;
 
-  GoToDetailsBookPage(idBook: number):void {
-      this.router.navigate(['book', idBook]);
+  GoToDetailsBookPage(idBook: number): void {
+    this.router.navigate(['book', idBook]);
   }
 }

@@ -37,20 +37,20 @@ export class PageReadComponent implements OnInit {
     }
   }
 
-  cancelButton(): void{
+  cancelButton(): void {
     const idBook = this.route.snapshot.paramMap.get('idBook');
-    this.router.navigate(['book', idBook])
+    this.router.navigate(['book', idBook]);
   }
 
-  GoToPageUpdatePage(){
+  GoToPageUpdatePage() {
     const idBook = this.route.snapshot.paramMap.get('idBook');
     const idPage = this.route.snapshot.paramMap.get('idPage');
-    this.router.navigate(['book', idBook,'page','update',idPage])
+    this.router.navigate(['book', idBook, 'page', 'update', idPage]);
   }
 
-  GoToPageDeletePage(){
+  GoToPageDeletePage() {
     const idBook = this.route.snapshot.paramMap.get('idBook');
     const idPage = this.route.snapshot.paramMap.get('idPage');
-    this.router.navigate(['book', idBook,'page','delete',idPage])
+    this.router.navigate(['book', idBook, 'page', 'delete', idPage]);
   }
 }

@@ -9,19 +9,15 @@ import { Page } from '../../../models/page';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './page.component.html',
-  styleUrl: './page.component.css'
+  styleUrl: './page.component.css',
 })
 export class PageComponent {
+  constructor(private router: Router) {}
 
-  constructor(
-    private router: Router,
-  ){}
-
-  @Input("value")
+  @Input('value')
   page: Page | undefined;
 
-  GoToDetailsPagePage(idBook: number, idPage: number):void {
+  GoToDetailsPagePage(idBook: number, idPage: number): void {
     this.router.navigate(['book', idBook, 'page', idPage]);
   }
-
 }

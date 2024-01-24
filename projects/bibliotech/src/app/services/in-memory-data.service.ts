@@ -7,16 +7,15 @@ import { BELONGS } from '../mocks/mock-belong';
 import { PAGES } from '../mocks/mock-page';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InMemoryDataService {
-
-  createDb(){
-    const books = BOOKS
-    const users = USERS
-    const categories = CATEGORIES
-    const belongs = BELONGS
-    const pages = PAGES
-    return {books, users, categories, belongs, pages}
+  createDb() {
+    const books = BOOKS;
+    const users = USERS;
+    const categories = CATEGORIES;
+    const belongs = BELONGS;
+    const pages = PAGES;
+    return { books, users, categories, belongs, pages };
   }
 }

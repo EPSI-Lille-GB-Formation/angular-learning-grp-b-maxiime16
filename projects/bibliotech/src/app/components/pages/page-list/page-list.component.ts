@@ -13,31 +13,30 @@ import { PageComponent } from '../page/page.component';
   standalone: true,
   imports: [CommonModule, PageComponent],
   templateUrl: './page-list.component.html',
-  styleUrls: ['./page-list.component.css']
+  styleUrls: ['./page-list.component.css'],
 })
-export class PageListComponent implements OnInit{
-
-  pageList: Observable<Page[]> = new Observable<Page[]>;
+export class PageListComponent implements OnInit {
+  pageList: Observable<Page[]> = new Observable<Page[]>();
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private pageService: PageService,
-  ){}
+    private pageService: PageService
+  ) {}
 
   ngOnInit(): void {
-    const bookIdString = this.route.snapshot.paramMap.get('idBook')
+    const bookIdString = this.route.snapshot.paramMap.get('idBook');
     const bookId = Number(bookIdString);
-    console.log('idBook= ',bookId)
+    console.log('idBook= ', bookId);
 
     this.pageList = this.pageService.getPageByIdBook(bookId);
-    this.pageList.subscribe((pages)=>{
-      console.log('Liste des pages: ', pages)
-    })
+    this.pageList.subscribe((pages) => {
+      console.log('Liste des pages: ', pages);
+    });
   }
 
-  GoToPageCreatePage(){
+  GoToPageCreatePage() {
     const idBook = this.route.snapshot.paramMap.get('idBook');
-    this.router.navigate(['book',idBook,'create']);
+    this.router.navigate(['book', idBook, 'create']);
   }
 }

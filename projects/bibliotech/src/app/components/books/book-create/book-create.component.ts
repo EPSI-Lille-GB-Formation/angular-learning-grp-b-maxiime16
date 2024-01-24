@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
 
 import { Book } from '../../../models/book';
 import { BookService } from '../../../services/book.service';
@@ -10,12 +14,11 @@ import { BookService } from '../../../services/book.service';
 @Component({
   selector: 'app-book-create',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './book-create.component.html',
-  styleUrl: './book-create.component.css'
+  styleUrl: './book-create.component.css',
 })
 export class BookCreateComponent {
-
   ajoutReussi: boolean = false;
 
   bookForm: FormGroup = this.formBuilder.group({
@@ -27,8 +30,8 @@ export class BookCreateComponent {
   constructor(
     private bookService: BookService,
     private formBuilder: FormBuilder,
-    private router: Router,
-  ){}
+    private router: Router
+  ) {}
 
   onSubmit(): void {
     if (this.bookForm.valid) {
@@ -43,12 +46,12 @@ export class BookCreateComponent {
             updateAt: null,
             idUser: 1, // A changer
           };
-  
+
           this.bookService.createBook(newBook).subscribe(
             (createdBook: Book) => {
               this.ajoutReussi = true;
               console.log('Book créé avec succés:', createdBook);
-              
+
               setTimeout(() => {
                 this.router.navigate(['']);
               }, 3000);
@@ -65,7 +68,6 @@ export class BookCreateComponent {
       );
     }
   }
-  
 
   goToHomePage() {
     this.router.navigate(['']);
