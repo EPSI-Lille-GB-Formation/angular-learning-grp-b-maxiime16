@@ -1,0 +1,26 @@
+<div>
+    <h2>Connexion</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <article>
+        <div>
+          <label for="email">Email d'utilisateur:</label>
+          <input
+            type="email"
+            formControlName="email"
+            value="admin@test.com"
+          />
+        </div>
+        <div>
+          <label for="password">Mot de passe:</label>
+          <input type="password" formControlName="password" value="admin" />
+        </div>
+        <div *ngIf="champsVides" class="error-message">
+          Veuillez remplir tous les champs.
+        </div>
+        <div *ngIf="messageConnexion">
+          {{ messageConnexion }}
+        </div>
+        <button type="submit">Se connecter</button>
+      </article>
+    </form>
+  </div>

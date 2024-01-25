@@ -15,6 +15,11 @@ import { CategoriesListComponent } from './components/categories/categories-list
 import { CategoriesCreateComponent } from './components/categories/categories-create/categories-create.component';
 import { CategoriesUpdateComponent } from './components/categories/categories-update/categories-update.component';
 import { CategoriesDeleteComponent } from './components/categories/categories-delete/categories-delete.component';
+import { AuthLoginComponent } from './components/authentification/auth-login/auth-login.component';
+import { AuthSigninComponent } from './components/authentification/auth-signin/auth-signin.component';
+import { UserReadComponent } from './components/users/user-read/user-read.component';
+import { UserDeleteComponent } from './components/users/user-delete/user-delete.component';
+import { UserEditComponent } from '../../../biblio-tech/src/app/components/user/user-edit.component';
 
 export const routes: Routes = [
   { path: '', component: BookListComponent },
@@ -39,4 +44,11 @@ export const routes: Routes = [
     path: 'categories/delete/:idCategory',
     component: CategoriesDeleteComponent,
   },
+
+  { path: 'login', component: AuthLoginComponent },
+  { path: 'sign-in', component: AuthSigninComponent },
+
+  { path: 'user/:idUser', component: UserReadComponent },
+  { path: 'user/delete/:idUser', component: UserDeleteComponent },
+  { path: 'user/update/idUser', component: UserEditComponent },
 ];

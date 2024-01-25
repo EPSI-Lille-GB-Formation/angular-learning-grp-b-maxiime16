@@ -1,0 +1,27 @@
+<article>
+    <nav *ngIf="!(isLoggedIn$ | async)" class="grid">
+        <ul>
+            <li>Biblio'Tech - Angular app</li>
+        </ul>
+        <ul>
+            <button (click)="goToHomePage()" class="button">accueil</button>
+            <button (click)="goToLoginPage()" class="button">Se connecter</button>
+        </ul>
+    </nav>
+    <div *ngIf="isLoggedIn$ | async" class="grid">
+        <div>
+            <p>
+                Vous êtes connecté, bonjour {{ currentUserName$ }}
+                {{ currentUserFirstName$ }}
+            </p>
+            <p>role: ({{ currentUserRole$ | async }})</p>
+        </div>
+        <div class="grid">
+            <button (click)="goToUserReadPage()">Voir profil</button>
+            <button *ngIf="(currentUserRole$ | async) === 'admin'">
+                Admin zone
+            </button>
+            <button (click)="logout()">Se déconnecter</button>
+        </div>
+    </div>
+</article>

@@ -2,53 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ShareService } from '../../services/share.service';
-import { UserService } from '../../services/user.service';
-import { AuthService } from '../../services/auth.service';
+
+import { ShareService } from '../../../services/share.service';
+import { UserService } from '../../../services/user.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <article>
-      <nav *ngIf="!(isLoggedIn$ | async)" class="grid">
-        <ul>
-          <li>Biblio'Tech - Angular app</li>
-        </ul>
-        <ul>
-          <button (click)="goToLoginPage()" class="button">accueil</button>
-          <button (click)="goToLoginPage()"class="button">Se connecter</button>
-        </ul>
-      </nav>
-      <div *ngIf="isLoggedIn$ | async" class="grid">
-        <div>
-          <p>
-            Vous êtes connecté, bonjour {{ currentUserName$ }}
-            {{ currentUserFirstName$ }}
-          </p>
-          <p>role: ({{ currentUserRole$ | async }})</p>
-        </div>
-        <div class="grid">
-          <button (click)="goToUserReadPage()">Voir profil</button>
-          <button *ngIf="(currentUserRole$ | async) === 'admin'">
-            Admin zone
-          </button>
-          <button (click)="logout()">Se déconnecter</button>
-        </div>
-      </div>
-    </article>
-  `,
-  styles: [
-    `
-      .element-1 {
-        grid-column: 1 / 3;
-      }
-      .button{
-        margin-left:10px
-            }
-    `,
-  ],
+  templateUrl: './auth.component.html',
+  styleUrl: './auth.component.css',
 })
 export class AuthComponent implements OnInit {
   isLoggedIn$: Observable<boolean> = new Observable<boolean>();
@@ -61,7 +25,7 @@ export class AuthComponent implements OnInit {
     private router: Router,
     private shared: ShareService,
     private authService: AuthService,
-    private userService: UserService // Service d'utilisateur pour récupérer les noms d'utilisateur
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -92,7 +56,11 @@ export class AuthComponent implements OnInit {
   goToLoginPage() {
     this.router.navigate(['/login']);
   }
+  goToHomePage() {
+    this.router.navigate(['']);
+  }
 
+  // aller a la page du user connecté
   goToUserReadPage(): void {
     this.currentUserId$.subscribe((userId: number | null) => {
       if (userId !== null) {

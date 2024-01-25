@@ -9,7 +9,6 @@ import { BookService } from '../../services/book.service';
 import { ShareService } from '../../services/share.service';
 import { CategoryService } from '../../services/categories.service';
 import { BelongsService } from '../../services/belongs.service';
-
 @Component({
   selector: 'book-list-component',
   standalone: true,
