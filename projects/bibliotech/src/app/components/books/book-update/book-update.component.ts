@@ -4,12 +4,17 @@ import {
   FormGroup,
   ReactiveFormsModule,
   FormBuilder,
-  Validators,
+  FormControl,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BookService } from '../../../services/book.service';
+import { CategoriesService } from '../../../services/categories.service';
 import { Book } from '../../../models/book';
+import { Observable, forkJoin, map } from 'rxjs';
+import { BelongService } from '../../../services/belong.service';
+import { Belong } from '../../../models/belong';
+import { Categories } from '../../../models/categories';
 
 @Component({
   selector: 'app-book-update',
@@ -20,9 +25,13 @@ import { Book } from '../../../models/book';
 })
 export class BookUpdateComponent implements OnInit {
   book: Book | undefined;
+  categoryControls: { [key: number]: FormControl } = {};
+  categories$: Observable<Categories[]> = new Observable<Categories[]>();
+  categoriesLabels$: Observable<string[]> = new Observable<string[]>();
 
   modifReussi: boolean = false;
   erreurAjout: boolean = false;
+  errorMessage: string = '';
 
   bookForm: FormGroup = this.formBuilder.group({
     title: [''],
@@ -32,6 +41,8 @@ export class BookUpdateComponent implements OnInit {
 
   constructor(
     private bookService: BookService,
+    private categoriesService: CategoriesService,
+    private belongService: BelongService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router
@@ -40,11 +51,36 @@ export class BookUpdateComponent implements OnInit {
   ngOnInit(): void {
     const idBook = this.route.snapshot.paramMap.get('idBook');
 
+    this.categoriesService.getCategories().subscribe(
+      (categories: Categories[]) => {
+        this.categories$ = new Observable<Categories[]>((observer) => {
+          observer.next(categories);
+          observer.complete();
+        });
+      },
+      (error: any) => {
+        console.error(error);
+      }
+    );
+
     if (idBook) {
       this.bookService
         .getBookById(+idBook)
-        .subscribe((book) => (this.book = book));
+        .subscribe((book: Book | undefined) => {
+          this.book = book;
+          console.log('Livre à modifier: ', this.book);
+          this.categoriesLabels$ = this.categoriesService.getLabelByIdCategory(
+            this.book?.id ?? 0
+          );
+        });
     }
+  }
+
+  getCategoryControl(categoryId: number): FormControl {
+    if (!this.categoryControls[categoryId]) {
+      this.categoryControls[categoryId] = this.formBuilder.control(false);
+    }
+    return this.categoryControls[categoryId];
   }
 
   onSubmit(): void {
@@ -66,23 +102,80 @@ export class BookUpdateComponent implements OnInit {
         updateAt: new Date(),
       };
 
-      this.bookService.updateBook(updatedBook).subscribe(
-        () => {
-          console.log("Livre mis à jour! Retour a la page d'accueil");
-          this.modifReussi = true;
-          this.erreurAjout = false;
+      // Afficher la liste des ID Belongs avec l'ID du livre
+      this.belongService
+        .getBelongIdsByBookId(this.book?.id ?? 0)
+        .subscribe((belongIds: number[]) => {
+          console.log('Liste des ID Belongs:', belongIds);
 
-          setTimeout(() => {
-            const idBook = this.route.snapshot.paramMap.get('idBook');
-            this.router.navigate(['book/', idBook]);
-          }, 1000);
-        },
-        (error) => {
-          console.error(error);
-          this.modifReussi = false;
-          this.erreurAjout = true;
-        }
+          // Supprimer chaque Belong en utilisant les IDs
+          belongIds.forEach((belongId) => {
+            this.belongService.deleteBelongById(belongId).subscribe(
+              () => {
+                console.log(
+                  `Belong avec l'ID ${belongId} supprimé avec succès`
+                );
+              },
+              (error: any) => {
+                console.error(
+                  `Erreur lors de la suppression de Belong avec l'ID ${belongId}`,
+                  error
+                );
+              }
+            );
+          });
+        });
+
+      // Récupération des catégories sélectionnées
+      const selectedCategories = Object.keys(this.categoryControls)
+        .filter((categoryId) => this.categoryControls[categoryId as any].value)
+        .map((categoryId) => +categoryId);
+
+      // Création d'un tableau d'observables pour récupérer les Belongs
+      const belongObservables = selectedCategories.map((categoryId) =>
+        this.belongService.getBelongs().pipe(
+          map((belongs: Belong[]) => ({
+            id: this.belongService.genIdBelong(belongs),
+            idBook: updatedBook.id,
+            idCategory: categoryId,
+          }))
+        )
       );
+
+      forkJoin(belongObservables).subscribe((newBelongs: Belong[]) => {
+        newBelongs.forEach((newBelong: Belong, index) => {
+          newBelong.id += index; // Incrémentation de l'ID
+          console.log('new belong', newBelong);
+          this.belongService.createBelong(newBelong).subscribe(
+            (createdBelong: Belong) => {
+              console.log('Belong créé avec succès: ', createdBelong);
+            },
+            (error: any) => {
+              console.error(error);
+            }
+          );
+        });
+
+        this.bookService.updateBook(updatedBook).subscribe(
+          () => {
+            console.log("Livre mis à jour! Retour a la page d'accueil");
+            this.modifReussi = true;
+            this.erreurAjout = false;
+
+            setTimeout(() => {
+              const idBook = this.route.snapshot.paramMap.get('idBook');
+              this.router.navigate(['book/', idBook]);
+            }, 1000);
+          },
+          (error) => {
+            console.error(error);
+            this.modifReussi = false;
+            this.erreurAjout = true;
+            this.errorMessage =
+              "Une erreur s'est produite lors de la mise à jour du livre.";
+          }
+        );
+      });
     }
   }
 

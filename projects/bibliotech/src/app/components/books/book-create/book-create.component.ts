@@ -67,74 +67,74 @@ export class BookCreateComponent implements OnInit {
     return this.categoryControls[categoryId];
   }
 
-// ...
+  onSubmit(): void {
+    if (this.bookForm.valid) {
+      this.bookService.getBooks().subscribe(
+        (books: Book[]) => {
+          const newBook: Book = {
+            id: this.bookService.genIdBook(books),
+            title: this.bookForm.get('title')?.value,
+            resume: this.bookForm.get('resume')?.value,
+            image: this.bookForm.get('image')?.value,
+            createdAt: new Date(),
+            updateAt: null,
+            idUser: 1, // A changer
+          };
+          console.log('Nouveau Book: ', newBook);
 
-onSubmit(): void {
-  if (this.bookForm.valid) {
-    this.bookService.getBooks().subscribe(
-      (books: Book[]) => {
-        const newBook: Book = {
-          id: this.bookService.genIdBook(books),
-          title: this.bookForm.get('title')?.value,
-          resume: this.bookForm.get('resume')?.value,
-          image: this.bookForm.get('image')?.value,
-          createdAt: new Date(),
-          updateAt: null,
-          idUser: 1, // A changer
-        };
-        console.log('Nouveau Book: ', newBook);
+          // Récupération des catégories sélectionnées
+          const selectedCategories = Object.keys(this.categoryControls)
+            .filter(
+              (categoryId) => this.categoryControls[categoryId as any].value
+            )
+            .map((categoryId) => +categoryId);
 
-        // Récupération des catégories sélectionnées
-        const selectedCategories = Object.keys(this.categoryControls)
-          .filter((categoryId) => this.categoryControls[categoryId as any].value)
-          .map((categoryId) => +categoryId);
+          // Création d'un tableau d'observables pour récupérer les Belongs
+          const belongObservables = selectedCategories.map((categoryId) =>
+            this.beloongService.getBelongs().pipe(
+              map((belongs: Belong[]) => ({
+                id: this.beloongService.genIdBelong(belongs),
+                idBook: newBook.id,
+                idCategory: categoryId,
+              }))
+            )
+          );
 
-        // Création d'un tableau d'observables pour récupérer les Belongs
-        const belongObservables = selectedCategories.map(categoryId =>
-          this.beloongService.getBelongs().pipe(
-            map((belongs: Belong[]) => ({
-              id: this.beloongService.genIdBelong(belongs),
-              idBook: newBook.id,
-              idCategory: categoryId,
-            }))
-          )
-        );
+          // Utilisation de forkJoin pour attendre que tous les appels asynchrones soient complets
+          forkJoin(belongObservables).subscribe((newBelongs: Belong[]) => {
+            newBelongs.forEach((newBelong: Belong, index) => {
+              newBelong.id += index; // Incrémentation de l'ID
+              console.log('new belong', newBelong);
+              this.beloongService.createBelong(newBelong).subscribe(
+                (createdBelong: Belong) => {
+                  console.log('Belong créé avec succès: ', createdBelong);
+                },
+                (error: any) => {
+                  console.error(error);
+                }
+              );
+            });
 
-        // Utilisation de forkJoin pour attendre que tous les appels asynchrones soient complets
-        forkJoin(belongObservables).subscribe((newBelongs: Belong[]) => {
-          newBelongs.forEach((newBelong: Belong, index) => {
-            newBelong.id += index; // Incrémentation de l'ID
-            console.log("new belong", newBelong);
-            this.beloongService.createBelong(newBelong).subscribe(
-              (createdBelong: Belong) => {
-                console.log('Belong créé avec succès: ', createdBelong);
+            this.bookService.createBook(newBook).subscribe(
+              (createdBook: Book) => {
+                console.log('Book ajouté', newBook);
+                this.ajoutReussi = true;
+                this.ajoutError = false;
               },
               (error: any) => {
                 console.error(error);
+                this.ajoutReussi = false;
+                this.ajoutError = true;
               }
             );
           });
-
-          this.bookService.createBook(newBook).subscribe(
-            (createdBook: Book) => {
-              console.log('Book ajouté', newBook);
-              this.ajoutReussi = true;
-              this.ajoutError = false;
-            },
-            (error: any) => {
-              console.error(error);
-              this.ajoutReussi = false;
-              this.ajoutError = true;
-            }
-          );
-        });
-      },
-      (error: any) => {
-        console.error(error);
-      }
-    );
+        },
+        (error: any) => {
+          console.error(error);
+        }
+      );
+    }
   }
-}
 
   goToHomePage() {
     this.router.navigate(['']);

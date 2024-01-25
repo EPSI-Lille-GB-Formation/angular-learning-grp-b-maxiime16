@@ -1,19 +1,29 @@
 <div>
   <h2>Modifier le livre</h2>
   <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
-    <article class="grid">
+    <article>
       <div>
         <h3>Informations actuelles:</h3>
-        <img [src]="book?.image" />
-        <label>Titre: {{ book?.title }}</label>
-        <label>Résumé: {{ book?.resume }}</label>
-        <label>
-          Date de création: {{ book?.createdAt | date : 'dd MMMM yyyy ' }}
-        </label>
-        <label>
-          Dernière mise à jour:
-          {{ book?.updateAt | date : 'dd MMMM yyyy h:mm' }}
-        </label>
+        <div class="grid">
+          <div>
+            <img [src]="book?.image" />
+          </div>
+          <div>
+            <label>Titre: {{ book?.title }}</label>
+            <label>Catégories: </label>
+            <ul *ngIf="categoriesLabels$ | async as categories">
+              <li *ngFor="let category of categories">{{ category }}</li>
+            </ul>
+            <label>
+              Date de création: {{ book?.createdAt | date : 'dd MMMM yyyy ' }}
+            </label>
+            <label>
+              Dernière mise à jour:
+              {{ book?.updateAt | date : 'dd MMMM yyyy h:mm' }}
+            </label>
+            <label class="resume"> Résumé: {{ book?.resume }}</label>
+          </div>
+        </div>
       </div>
 
       <div>
@@ -29,6 +39,14 @@
         <div>
           <label for="resume">Résumé:</label>
           <textarea formControlName="resume"></textarea>
+        </div>
+        <div>
+          <label for="selectedCategories">Catégories:</label>
+          <div *ngFor="let category of categories$ | async">
+            <label>
+              <input type="checkbox" [formControl]="getCategoryControl(category.id)" /> {{ category.label }}
+            </label>
+          </div>
         </div>
       </div>
     </article>

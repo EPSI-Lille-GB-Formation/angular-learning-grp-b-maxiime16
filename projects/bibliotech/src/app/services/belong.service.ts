@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map } from 'rxjs';
+import { Observable, catchError, forkJoin, map } from 'rxjs';
 
 import { Belong } from '../models/belong';
 
@@ -38,5 +38,22 @@ export class BelongService {
   }
 
   // Récupère la liste d'ID de livres en fonction de l'ID de la catégorie
-  getIdBookByIdCategory() {}
+  getIdBookByIdCategory(categoryId: number): Observable<number[]> {
+    // Faire une requête HTTP pour récupérer les données depuis l'API simulée
+    return this.http
+      .get<Belong[]>(`${this.apiUrl}?idCategory=${categoryId}`)
+      .pipe(map((belongs) => belongs.map((belong) => belong.idBook)));
+  }
+
+  // Récupère les IDs des Belongs par rapport à l'ID du livre
+  getBelongIdsByBookId(bookId: number): Observable<number[]> {
+    return this.http
+      .get<Belong[]>(`${this.apiUrl}?idBook=${bookId}`)
+      .pipe(map((belongs) => belongs.map((belong) => belong.id)));
+  }
+
+  // Supprime les liaisons Belong en fonction de l'ID du livre
+  deleteBelongById(belongId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${belongId}`);
+  }
 }

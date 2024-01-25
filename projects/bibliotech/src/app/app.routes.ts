@@ -15,7 +15,6 @@ import { CategoriesListComponent } from './components/categories/categories-list
 import { CategoriesCreateComponent } from './components/categories/categories-create/categories-create.component';
 import { CategoriesUpdateComponent } from './components/categories/categories-update/categories-update.component';
 import { CategoriesDeleteComponent } from './components/categories/categories-delete/categories-delete.component';
-import { BelongComponent } from './belong/belong.component';
 
 export const routes: Routes = [
   { path: '', component: BookListComponent },
@@ -40,6 +39,4 @@ export const routes: Routes = [
     path: 'categories/delete/:idCategory',
     component: CategoriesDeleteComponent,
   },
-
-  {path: 'belong', component: BelongComponent},
 ];

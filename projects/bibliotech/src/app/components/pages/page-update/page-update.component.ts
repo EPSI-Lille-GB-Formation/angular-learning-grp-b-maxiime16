@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormGroup,
-  ReactiveFormsModule,
-  FormBuilder,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Page } from '../../../models/page';
@@ -25,8 +20,8 @@ export class PageUpdateComponent implements OnInit {
   erreurAjout: boolean = false;
 
   pageForm: FormGroup = this.formBuilder.group({
-    title: ['', Validators.required],
-    content: ['', Validators.required],
+    title: [''],
+    content: [''],
   });
 
   constructor(
