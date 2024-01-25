@@ -17,6 +17,15 @@
             <input type="text" id="image" formControlName="image" placeholder="Url de l'image" required>
         </div>
 
+        <div>
+            <label for="selectedCategories">Catégories:</label>
+            <div *ngFor="let category of categories$ | async">
+                <label>
+                    <input type="checkbox" [formControl]="getCategoryControl(category.id)" /> {{ category.label }}
+                </label>
+            </div>
+        </div>
+
         <div *ngIf="ajoutReussi" class="success-message">
             L'ajout a réussi !
         </div>

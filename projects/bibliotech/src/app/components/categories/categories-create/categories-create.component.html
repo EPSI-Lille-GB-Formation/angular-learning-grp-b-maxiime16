@@ -1,0 +1,20 @@
+<div>
+    <h2>Créer une nouvelle catégorie</h2>
+
+    <form [formGroup]="categForm" (ngSubmit)="onSubmit()">
+        <div>
+            <label for="label">Label:</label>
+            <input type="label" id="label" formControlName="label" required>
+        </div>
+        <div *ngIf="ajoutReussi" class="success-message">
+            L'ajout a réussi !
+        </div>
+        <div *ngIf="ajoutError" class="error-message">
+            L'ajout n'a pas réussi !
+        </div>
+        <div>
+            <button type="submit" [disabled]="!categForm.valid">Ajouter une nouvelle catégorie</button>
+            <button (click)="cancelButton()">Annuler</button>
+        </div>
+    </form>
+</div>

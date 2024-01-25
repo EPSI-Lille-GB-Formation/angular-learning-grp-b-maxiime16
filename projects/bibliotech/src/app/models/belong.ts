@@ -1,3 +1,6 @@
 export class Belong {
-  constructor(public idBook: number, public idCategory: number) {}
+  constructor(
+    public id: number,
+    public idBook: number,
+    public idCategory: number,) {}
 }

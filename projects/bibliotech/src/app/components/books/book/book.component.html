@@ -7,8 +7,8 @@
             <label>Titre: {{book.title}}</label>
             <label>Auteur: </label>
             <label>Catégories: </label>
-            <ul>
-                <li></li>
+            <ul *ngIf="categoriesLabels$ | async as categories">
+                <li *ngFor="let category of categories">{{ category }}</li>
             </ul>
         </div>
     </div>

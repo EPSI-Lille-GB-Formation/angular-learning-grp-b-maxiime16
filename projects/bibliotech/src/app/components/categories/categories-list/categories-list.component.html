@@ -1,0 +1,11 @@
+<div>
+    <div>
+        <button (click)="GoToCategorieCreatePage()">Ajouter une catégorie ⊕</button>
+    </div>
+    <h2>Liste des catégories: </h2>
+    <div>
+        <ng-container *ngFor="let categories of categoriesList | async">
+            <app-categories [value]="categories"></app-categories>
+        </ng-container>
+    </div>
+</div>

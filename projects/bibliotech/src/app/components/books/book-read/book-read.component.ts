@@ -2,9 +2,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 import { Book } from '../../../models/book';
 import { BookService } from '../../../services/book.service';
+import { CategoriesService } from '../../../services/categories.service';
 import { PageListComponent } from '../../pages/page-list/page-list.component';
 
 @Component({
@@ -15,10 +17,13 @@ import { PageListComponent } from '../../pages/page-list/page-list.component';
   styleUrls: ['./book-read.component.css'],
 })
 export class BookReadComponent implements OnInit {
+  categoriesLabels$: Observable<string[]> = new Observable<string[]>();
+
   bookRead: Book | undefined;
 
   constructor(
     private bookService: BookService,
+    private categService: CategoriesService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -31,6 +36,10 @@ export class BookReadComponent implements OnInit {
         (book: Book | undefined) => {
           this.bookRead = book;
           console.log('Informations du livre:', this.bookRead);
+
+          this.categoriesLabels$ = this.categService.getLabelByIdCategory(
+            this.bookRead?.id ?? 0
+          );
         },
         (error: any) => {
           console.error(

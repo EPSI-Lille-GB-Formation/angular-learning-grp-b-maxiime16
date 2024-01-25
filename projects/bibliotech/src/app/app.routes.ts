@@ -11,6 +11,12 @@ import { PageReadComponent } from './components/pages/page-read/page-read.compon
 import { PageUpdateComponent } from './components/pages/page-update/page-update.component';
 import { PageDeleteComponent } from './components/pages/page-delete/page-delete.component';
 
+import { CategoriesListComponent } from './components/categories/categories-list/categories-list.component';
+import { CategoriesCreateComponent } from './components/categories/categories-create/categories-create.component';
+import { CategoriesUpdateComponent } from './components/categories/categories-update/categories-update.component';
+import { CategoriesDeleteComponent } from './components/categories/categories-delete/categories-delete.component';
+import { BelongComponent } from './belong/belong.component';
+
 export const routes: Routes = [
   { path: '', component: BookListComponent },
 
@@ -23,4 +29,17 @@ export const routes: Routes = [
   { path: 'book/:idBook/page/:idPage', component: PageReadComponent },
   { path: 'book/:idBook/page/update/:idPage', component: PageUpdateComponent },
   { path: 'book/:idBook/page/delete/:idPage', component: PageDeleteComponent },
+
+  { path: 'categories', component: CategoriesListComponent },
+  { path: 'categories/create', component: CategoriesCreateComponent },
+  {
+    path: 'categories/update/:idCategory',
+    component: CategoriesUpdateComponent,
+  },
+  {
+    path: 'categories/delete/:idCategory',
+    component: CategoriesDeleteComponent,
+  },
+
+  {path: 'belong', component: BelongComponent},
 ];
