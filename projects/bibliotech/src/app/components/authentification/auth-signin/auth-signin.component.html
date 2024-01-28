@@ -1,1 +1,38 @@
-<p>auth-signin works!</p>
+<div class="auth-container">
+  <h2>Inscription</h2>
+
+  <form *ngIf="registerForm" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="firstName">Prénom:</label>
+      <input type="text" id="firstName" formControlName="firstName">
+    </div>
+
+    <div>
+      <label for="lastName">Nom de famille:</label>
+      <input type="text" id="lastName" formControlName="lastName">
+    </div>
+
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" formControlName="email">
+    </div>
+
+    <div>
+      <label for="password">Mot de passe:</label>
+      <input type="password" id="password" formControlName="password">
+      <div *ngIf="registerForm.get('password')?.hasError('pattern')">
+        Mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="registerForm.invalid">S'inscrire</button>
+  </form>
+
+  <div *ngIf="champsVides" class="error-message">
+    Veuillez remplir tous les champs.
+  </div>
+
+  <div *ngIf="messageInscription" [ngClass]="messageInscriptionClass">
+    {{ messageInscription }}
+  </div>
+</div>

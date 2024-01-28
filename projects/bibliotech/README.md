@@ -1,5 +1,9 @@
 # Projet Bibli-Tech
 
+## install
+- installer nodejs
+- npm install -g @angular/cli@17.0.5
+
 ## a rappel commandes:
 - ng serve bibliotech
 - ng generate guard|service|component <name> bibliotech --project  --skip-tests

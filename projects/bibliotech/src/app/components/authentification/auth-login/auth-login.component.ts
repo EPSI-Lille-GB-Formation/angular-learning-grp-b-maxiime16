@@ -80,7 +80,7 @@ export class AuthLoginComponent {
               'Connexion échouée: ',
               this.messageConnexion,
               '| LoggedValue=',
-              this.shareService.IsLoggedIn
+              this.shareService.isLoggedIn
             );
           }
         },
@@ -92,7 +92,7 @@ export class AuthLoginComponent {
       this.champsVides = true;
       console.log(
         'Connexion échouée: champ vide| LoggedValue=',
-        this.shareService.IsLoggedIn
+        this.shareService.isLoggedIn
       );
     }
   }
