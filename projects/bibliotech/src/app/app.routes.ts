@@ -20,6 +20,8 @@ import { AuthSigninComponent } from './components/authentification/auth-signin/a
 import { UserReadComponent } from './components/users/user-read/user-read.component';
 import { UserDeleteComponent } from './components/users/user-delete/user-delete.component';
 import { UserEditComponent } from '../../../biblio-tech/src/app/components/user/user-edit.component';
+import { AdminPageComponent } from './components/authentification/admin-page/admin-page.component';
+import { EasterEggComponent } from './models/easter-egg/easter-egg.component';
 
 export const routes: Routes = [
   { path: '', component: BookListComponent },
@@ -47,8 +49,11 @@ export const routes: Routes = [
 
   { path: 'login', component: AuthLoginComponent },
   { path: 'sign-in', component: AuthSigninComponent },
+  { path: 'admin', component:AdminPageComponent},
 
   { path: 'user/:idUser', component: UserReadComponent },
   { path: 'user/delete/:idUser', component: UserDeleteComponent },
-  { path: 'user/update/idUser', component: UserEditComponent },
+  { path: 'user/update/:idUser', component: UserEditComponent },
+
+  { path: 'easter-egg', component: EasterEggComponent},
 ];

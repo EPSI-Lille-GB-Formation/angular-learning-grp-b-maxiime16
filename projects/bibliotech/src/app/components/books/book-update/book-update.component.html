@@ -15,9 +15,6 @@
               <li *ngFor="let category of categories">{{ category }}</li>
             </ul>
             <label>
-              Date de création: {{ book?.createdAt | date : 'dd MMMM yyyy ' }}
-            </label>
-            <label>
               Dernière mise à jour:
               {{ book?.updateAt | date : 'dd MMMM yyyy h:mm' }}
             </label>
@@ -30,15 +27,15 @@
         <h3>Modifications:</h3>
         <div>
           <label for="title">Titre:</label>
-          <input type="text" formControlName="title" />
+          <input type="text" formControlName="title" [value]="book?.title"/>
         </div>
         <div>
           <label for="image">Url image:</label>
-          <input type="text" formControlName="image" />
+          <input type="text" formControlName="image" [value]="book?.image"/>
         </div>
         <div>
           <label for="resume">Résumé:</label>
-          <textarea formControlName="resume"></textarea>
+          <textarea formControlName="resume" [value]="book?.resume"></textarea>
         </div>
         <div>
           <label for="selectedCategories">Catégories:</label>

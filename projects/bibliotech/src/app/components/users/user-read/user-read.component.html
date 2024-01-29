@@ -1,1 +1,14 @@
-<p>user-read works!</p>
+<div class="grid">
+    <button (click)="GoToUpdatePage(UserRead?.id)">Modifier</button>
+    <button (click)="GoToDeletePage(UserRead?.id)">Supprimer</button>
+</div>
+<div>
+    <h2>Profil de l'utilisateur:</h2>
+    <article>
+        <div>
+            <label>Nom: {{UserRead?.firstName}} {{UserRead?.lastName}}</label>
+            <label>E-mail: {{UserRead?.email}}</label>
+            <label>Role: {{UserRead?.role}}</label>
+        </div>
+    </article>
+</div>

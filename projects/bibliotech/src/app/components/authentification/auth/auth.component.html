@@ -11,16 +11,19 @@
     <div *ngIf="isLoggedIn$ | async" class="grid">
         <div>
             <p>
-                Vous êtes connecté, bonjour {{ currentUserName$ }}
+                Vous êtes connecté,</p>
+            <p> bonjour {{ currentUserName$ }}
                 {{ currentUserFirstName$ }}
-            </p>
-            <p>role: ({{ currentUserRole$ | async }})</p>
+                </p>
+                <p>role: ({{ currentUserRole$ | async }})</p>
         </div>
-        <div class="grid">
+        <div>
             <button (click)="goToUserReadPage()">Voir profil</button>
-            <button *ngIf="(currentUserRole$ | async) === 'admin'">
-                Admin zone
-            </button>
+            <div *ngIf="(currentUserRole$ | async) === 'admin'">
+                <button (click)="goToAdminPage()">
+                    Admin zone
+                </button>
+            </div>
             <button (click)="logout()">Se déconnecter</button>
         </div>
     </div>

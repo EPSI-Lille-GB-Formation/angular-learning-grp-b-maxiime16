@@ -1,0 +1,28 @@
+<div>
+    <article class="grid">
+      <div>
+        <button (click)="changeComponent(UserList)" [ngClass]="{'selected-button': currentComponent === UserList}">User</button>
+      </div>
+      <div>
+        <button (click)="changeComponent(BookList)" [ngClass]="{'selected-button': currentComponent === BookList}">Book</button>
+      </div>
+      <div>
+        <button (click)="changeComponent(CategoriesList)" [ngClass]="{'selected-button': currentComponent === CategoriesList}">Categories</button>
+      </div>
+    </article>
+  </div>
+  
+  <div>
+    <ng-container *ngIf="currentComponent === UserList">
+      <app-user-list></app-user-list>
+    </ng-container>
+  
+    <ng-container *ngIf="currentComponent === BookList">
+      <app-book-list></app-book-list>
+    </ng-container>
+  
+    <ng-container *ngIf="currentComponent === CategoriesList">
+      <app-categories-list></app-categories-list>
+    </ng-container>
+  </div>
+  

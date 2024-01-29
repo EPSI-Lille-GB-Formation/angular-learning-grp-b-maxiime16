@@ -1,1 +1,16 @@
-<p>user-delete works!</p>
+<div>
+    <h2>Supprimer la catégorie</h2>
+    <p>Êtes-vous sûr de vouloir supprimer l'utilisateur "{{user?.firstName}} {{user?.lastName}}" ?</p>
+    <div *ngIf="deleteSuccess" class="success-message">
+        La suppression a réussi !
+    </div>
+    <div *ngIf="deleteError" class="error-message">
+        La suppression a échoué.
+    </div>
+    <div class="grid">
+        <button (click)="deleteUserButton()" class="delete-button">
+            Supprimer définitivement
+        </button>
+        <button (click)="cancelButton()">Annuler</button>
+    </div>
+</div>

@@ -69,6 +69,10 @@ export class AuthComponent implements OnInit {
     });
   }
 
+  goToAdminPage(){
+    this.router.navigate(['admin']);
+  }
+
   // Fonction de déconnexion
   logout(): void {
     this.authService.logout();

@@ -1,0 +1,11 @@
+<div>
+    <div>
+        <button (click)="GoToUserCreatePage()">Ajouter un utilisateur ⊕</button>
+    </div>
+    <h2>Liste des utilisateurs: </h2>
+    <div>
+        <ng-container *ngFor="let users of userList | async">
+            <app-user [value]="users"></app-user>
+        </ng-container>
+    </div>
+</div>

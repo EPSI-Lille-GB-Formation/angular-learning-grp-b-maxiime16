@@ -1,7 +1,9 @@
 <article *ngIf="categorie">
     <div class="grid">
-        <label>Id: {{categorie.id}}</label>
-        <label>Label: {{categorie.label}}</label>
+        <div>
+            <label>Id: {{categorie.id}}</label>
+            <label>Label: {{categorie.label}}</label>
+        </div>
         <div>
             <button (click)="GoToUpdateCategPage(categorie.id)">Modifier</button>
             <button (click)="GoToDeleteCategPage(categorie.id)">Supprimer</button>

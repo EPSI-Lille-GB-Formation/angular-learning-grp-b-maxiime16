@@ -48,4 +48,19 @@ export class UserService {
       });
     }
   }
+
+    // méthode pour récupérer la liste des catégories
+    getUsers(): Observable<User[]> {
+      return this.http.get<User[]>(this.apiUrl);
+    }
+
+    getUserById(id: number): Observable<User | undefined> {
+      const URL = `${this.apiUrl}/${id}`;
+      return this.http.get<User | undefined>(URL);
+    }
+
+    deleteUser(id: number): Observable<void> {
+      const URL = `${this.apiUrl}/${id}`;
+      return this.http.delete<void>(URL);
+    }
 }

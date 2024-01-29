@@ -7,9 +7,6 @@
                 <label>Titre: {{ page?.title }}</label>
                 <label>Contenu: {{ page?.content }}</label>
                 <label>
-                    Date de création: {{ page?.createdAt | date : 'dd MMMM yyyy ' }}
-                </label>
-                <label>
                     Dernière mise à jour:
                     {{ page?.updatedAt | date : 'dd MMMM yyyy h:mm' }}
                 </label>
@@ -19,11 +16,11 @@
                 <h3>Modifications:</h3>
                 <div>
                     <label for="title">Titre:</label>
-                    <input type="text" formControlName="title" />
+                    <input type="text" formControlName="title" [value]="page?.title"/>
                 </div>
                 <div>
                     <label for="content">Résumé:</label>
-                    <textarea formControlName="content"></textarea>
+                    <textarea formControlName="content"[value]="page?.content"></textarea>
                 </div>
             </div>
         </article>

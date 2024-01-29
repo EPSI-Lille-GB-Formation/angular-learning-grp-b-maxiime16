@@ -1,0 +1,14 @@
+<article *ngIf="user">
+    <div class="grid">
+        <div>
+            <label>Id User: {{user.id}}</label>
+            <label>Nom complet: {{user.firstName}} {{user.lastName}}</label>
+            <label>E-mail: {{user.email}}</label>
+            <label>Rôle: {{user.role}}</label>
+        </div>
+        <div class="grid">
+            <button (click)="GoToUpdateUserPage(user.id)">Modifier</button>
+            <button (click)="GoToDeleteUserPage(user.id)">Supprimer</button>
+        </div>
+    </div>
+</article>
