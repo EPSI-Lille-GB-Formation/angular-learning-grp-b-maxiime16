@@ -14,12 +14,14 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.css',
 })
+
 export class AuthComponent implements OnInit {
+
   isLoggedIn$: Observable<boolean> = new Observable<boolean>();
   currentUserId$: Observable<number | null> = new Observable<number | null>();
   currentUserRole$: Observable<string | null> = new Observable<string | null>();
-  currentUserName$: string | null = null; // Propriété pour le nom d'utilisateur
-  currentUserFirstName$: string | null = null; // Propriété pour le prénom
+  currentUserName$: string | null = null;
+  currentUserFirstName$: string | null = null;
 
   constructor(
     private router: Router,
@@ -33,7 +35,6 @@ export class AuthComponent implements OnInit {
     this.currentUserId$ = this.shared.currentUserId$;
     this.currentUserRole$ = this.shared.currentUserRole$;
 
-    // Extraction de la valeur de l'observable
     this.currentUserId$.subscribe((userId: number | null) => {
       if (userId !== null) {
         this.userService
@@ -52,7 +53,6 @@ export class AuthComponent implements OnInit {
     });
   }
 
-  // Naviguer vers la page de connexion
   goToLoginPage() {
     this.router.navigate(['/login']);
   }
@@ -60,7 +60,6 @@ export class AuthComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  // aller a la page du user connecté
   goToUserReadPage(): void {
     this.currentUserId$.subscribe((userId: number | null) => {
       if (userId !== null) {
@@ -69,14 +68,12 @@ export class AuthComponent implements OnInit {
     });
   }
 
-  goToAdminPage(){
+  goToAdminPage() {
     this.router.navigate(['admin']);
   }
 
-  // Fonction de déconnexion
   logout(): void {
     this.authService.logout();
-    // Naviguer vers la page principale après la déconnexion avec un délai
     setTimeout(() => {
       this.router.navigate(['']);
     }, 1000);

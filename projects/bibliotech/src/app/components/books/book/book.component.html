@@ -5,14 +5,14 @@
         </div>
         <div>
             <label>Titre: {{book.title}}</label>
-            <label>Auteur: </label>
+            <label>Auteur: {{ authorName$ | async }} {{ authorFirstName$ | async }}</label>
             <label>Catégories: </label>
             <ul *ngIf="categoriesLabels$ | async as categories">
                 <li *ngFor="let category of categories">{{ category }}</li>
             </ul>
         </div>
     </div>
-    <div>
+    <div *ngIf="isLoggedIn$ | async">
         <button (click)="GoToDetailsBookPage(book.id)">Voir détails</button>
     </div>
 </article>

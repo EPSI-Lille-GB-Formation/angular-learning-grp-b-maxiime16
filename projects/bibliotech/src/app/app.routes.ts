@@ -15,45 +15,49 @@ import { CategoriesListComponent } from './components/categories/categories-list
 import { CategoriesCreateComponent } from './components/categories/categories-create/categories-create.component';
 import { CategoriesUpdateComponent } from './components/categories/categories-update/categories-update.component';
 import { CategoriesDeleteComponent } from './components/categories/categories-delete/categories-delete.component';
+
 import { AuthLoginComponent } from './components/authentification/auth-login/auth-login.component';
 import { AuthSigninComponent } from './components/authentification/auth-signin/auth-signin.component';
 import { UserReadComponent } from './components/users/user-read/user-read.component';
 import { UserDeleteComponent } from './components/users/user-delete/user-delete.component';
 import { UserEditComponent } from '../../../biblio-tech/src/app/components/user/user-edit.component';
 import { AdminPageComponent } from './components/authentification/admin-page/admin-page.component';
+
+import { AuthGuard } from './guards/authGuard';
+
 import { EasterEggComponent } from './models/easter-egg/easter-egg.component';
 
 export const routes: Routes = [
   { path: '', component: BookListComponent },
 
-  { path: 'book/create', component: BookCreateComponent },
-  { path: 'book/:idBook', component: BookReadComponent },
-  { path: 'book/update/:idBook', component: BookUpdateComponent },
-  { path: 'book/delete/:idBook', component: BookDeleteComponent },
+  { path: 'book/create', component: BookCreateComponent, canActivate: [AuthGuard]},
+  { path: 'book/:idBook', component: BookReadComponent, canActivate: [AuthGuard] },
+  { path: 'book/update/:idBook', component: BookUpdateComponent, canActivate: [AuthGuard] },
+  { path: 'book/delete/:idBook', component: BookDeleteComponent, canActivate: [AuthGuard] },
 
-  { path: 'book/:idBook/create', component: PageCreateComponent },
-  { path: 'book/:idBook/page/:idPage', component: PageReadComponent },
-  { path: 'book/:idBook/page/update/:idPage', component: PageUpdateComponent },
-  { path: 'book/:idBook/page/delete/:idPage', component: PageDeleteComponent },
+  { path: 'book/:idBook/create', component: PageCreateComponent, canActivate: [AuthGuard] },
+  { path: 'book/:idBook/page/:idPage', component: PageReadComponent, canActivate: [AuthGuard] },
+  { path: 'book/:idBook/page/update/:idPage', component: PageUpdateComponent, canActivate: [AuthGuard] },
+  { path: 'book/:idBook/page/delete/:idPage', component: PageDeleteComponent, canActivate: [AuthGuard] },
 
-  { path: 'categories', component: CategoriesListComponent },
-  { path: 'categories/create', component: CategoriesCreateComponent },
+  { path: 'categories', component: CategoriesListComponent, canActivate: [AuthGuard] },
+  { path: 'categories/create', component: CategoriesCreateComponent, canActivate: [AuthGuard] },
   {
     path: 'categories/update/:idCategory',
-    component: CategoriesUpdateComponent,
+    component: CategoriesUpdateComponent, canActivate: [AuthGuard]
   },
   {
     path: 'categories/delete/:idCategory',
-    component: CategoriesDeleteComponent,
+    component: CategoriesDeleteComponent, canActivate: [AuthGuard]
   },
 
   { path: 'login', component: AuthLoginComponent },
   { path: 'sign-in', component: AuthSigninComponent },
-  { path: 'admin', component:AdminPageComponent},
+  { path: 'admin', component:AdminPageComponent, canActivate: [AuthGuard]},
 
-  { path: 'user/:idUser', component: UserReadComponent },
-  { path: 'user/delete/:idUser', component: UserDeleteComponent },
-  { path: 'user/update/:idUser', component: UserEditComponent },
+  { path: 'user/:idUser', component: UserReadComponent, canActivate: [AuthGuard] },
+  { path: 'user/delete/:idUser', component: UserDeleteComponent, canActivate: [AuthGuard] },
+  { path: 'user/update/:idUser', component: UserEditComponent, canActivate: [AuthGuard] },
 
   { path: 'easter-egg', component: EasterEggComponent},
 ];

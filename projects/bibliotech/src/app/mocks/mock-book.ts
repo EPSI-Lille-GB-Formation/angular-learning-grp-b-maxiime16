@@ -9,7 +9,7 @@ export const BOOKS: Book[] = [
     image: 'https://m.media-amazon.com/images/I/51v5295UzVL._SY445_SX342_.jpg',
     createdAt: new Date(1998, 9, 16),
     updateAt: null,
-    idUser: 2,
+    idUser: 1,
   },
   {
     id: 1,
@@ -19,7 +19,7 @@ export const BOOKS: Book[] = [
     image: 'https://m.media-amazon.com/images/I/51NERxjRNbL._SY445_SX342_.jpg',
     createdAt: new Date(1998, 9, 16),
     updateAt: null,
-    idUser: 2,
+    idUser: 1,
   },
   {
     id: 2,

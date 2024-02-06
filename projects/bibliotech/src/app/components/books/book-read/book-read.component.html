@@ -1,4 +1,4 @@
-<div class="grid">
+<div class="grid" *ngIf="(currentUserId$ | async) === bookRead?.idUser">
     <button (click)="GoToUpdatePage(bookRead?.id)">Modifier</button>
     <button (click)="GoToDeletePage(bookRead?.id)">Supprimer</button>
 </div>
@@ -11,7 +11,7 @@
             </div>
             <div>
                 <label>Titre: {{bookRead?.title}}</label>
-                <label>Auteur: </label>
+                <label>Auteur: {{ authorName$ | async }} {{ authorFirstName$ | async }}</label>
                 <label>Catégories: </label>
                 <ul *ngIf="categoriesLabels$ | async as categories">
                     <li *ngFor="let category of categories">{{ category }}</li>

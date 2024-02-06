@@ -1,5 +1,5 @@
 <div>
-    <div>
+    <div *ngIf="isLoggedIn$ | async">
         <button (click)="GoToBookCreatePage()">Ajouter un livre ⊕</button>
     </div>
     <h2>Liste des livres: </h2>

@@ -1,8 +1,8 @@
-<!-- page-list.component.html -->
 <div>
-    <div>
+    <div *ngIf="(currentUserId$ | async) === bookRead?.idUser">
         <button (click)="GoToPageCreatePage()">Ajouter une page ⊕</button>
     </div>
+    <p> </p>
     <div>
         <h2>Liste des pages: </h2>
         <ng-container *ngFor="let page of pageList | async">
