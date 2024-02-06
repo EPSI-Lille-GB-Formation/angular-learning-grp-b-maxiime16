@@ -16,6 +16,7 @@ import { Categories } from '../../../models/categories';
 import { CategoriesService } from '../../../services/categories.service';
 import { BelongService } from '../../../services/belong.service';
 import { Belong } from '../../../models/belong';
+import { ShareService } from '../../../services/share.service';
 
 @Component({
   selector: 'app-book-create',
@@ -42,7 +43,8 @@ export class BookCreateComponent implements OnInit {
     private categoriesService: CategoriesService,
     private beloongService: BelongService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private shareService: ShareService,
   ) {}
 
   ngOnInit(): void {
@@ -69,6 +71,7 @@ export class BookCreateComponent implements OnInit {
 
   onSubmit(): void {
     if (this.bookForm.valid) {
+      const userId = this.shareService.getCurrentUserId();
       this.bookService.getBooks().subscribe(
         (books: Book[]) => {
           const newBook: Book = {
@@ -78,7 +81,7 @@ export class BookCreateComponent implements OnInit {
             image: this.bookForm.get('image')?.value,
             createdAt: new Date(),
             updateAt: null,
-            idUser: 1, // A changer
+            idUser: userId,
           };
           console.log('Nouveau Book: ', newBook);
 
