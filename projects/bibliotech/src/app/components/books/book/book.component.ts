@@ -16,6 +16,8 @@ import { CategoriesService } from '../../../services/categories.service';
 export class BookComponent implements OnInit {
   
   categoriesLabels$: Observable<string[]> = new Observable<string[]>();
+  authorName$: Observable<string | null> = new Observable<string | null>();
+  authorFirstName$: Observable<string | null> = new Observable<string | null>();
 
   constructor(
     private router: Router,
