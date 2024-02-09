@@ -1,1 +1,39 @@
-<p>user-update works!</p>
+<div>
+    <h2>Modifier le profil</h2>
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <article>
+            <div>
+                <label>Nom: {{user?.firstName}}</label>
+                <input type="text" formControlName="firstName" [value]="user?.firstName" />
+            </div>
+            <div>
+                <label>Prénom: {{user?.lastName}}</label>
+                <input type="text" formControlName="lastName" [value]="user?.lastName" />
+            </div>
+            <div>
+                <label>Email: {{user?.email}}</label>
+                <input type="email" formControlName="email" [value]="user?.email" />
+            </div>
+            <div>
+                <label>Ancien mot de passe:</label>
+                <input type="password" formControlName="oldPassword" />
+                <div
+                    *ngIf="userForm.get('oldPassword')?.invalid && (userForm.get('oldPassword')?.dirty || userForm.get('oldPassword')?.touched)">
+                    <span class="error">Ancien mot de passe incorrect</span>
+                </div>
+            </div>
+            <div>
+                <label>Nouveau mot de passe:</label>
+                <input type="password" formControlName="newPassword" />
+            </div>
+            <div *ngIf="isAdmin">
+                <!-- Condition pour afficher les boutons radio uniquement si l'utilisateur est admin -->
+                <label>Rôle:</label>
+                <input type="radio" formControlName="role" value="user" /> Utilisateur
+                <input type="radio" formControlName="role" value="admin" /> Administrateur
+            </div>
+        </article>
+        <button type="submit">Modifier</button>
+        <button type="button" (click)="cancelButton()">Annuler</button>
+    </form>
+</div>

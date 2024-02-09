@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
 
 import { Book } from '../../../models/book';
 import { BookService } from '../../../services/book.service';
-import { CategoriesService } from '../../../services/categories.service';
 import { PageListComponent } from '../../pages/page-list/page-list.component';
+import { CategoriesService } from '../../../services/categories.service';
 import { UserService } from '../../../services/user.service';
 import { ShareService } from '../../../services/share.service';
 
@@ -18,11 +18,10 @@ import { ShareService } from '../../../services/share.service';
   styleUrls: ['./book-read.component.css'],
 })
 export class BookReadComponent implements OnInit {
-
-  authorName$: Observable<string | null> = new Observable<string | null>();
-  authorFirstName$: Observable<string | null> = new Observable<string | null>();
-  categoriesLabels$: Observable<string[]> = new Observable<string[]>();
-  currentUserId$: Observable<number | null> = new Observable<number | null>();
+  authorName$: Observable<string | null>;
+  authorFirstName$: Observable<string | null>;
+  categoriesLabels$: Observable<string[]>;
+  currentUserId$: Observable<number | null>;
 
   bookRead: Book | undefined;
 
@@ -33,12 +32,14 @@ export class BookReadComponent implements OnInit {
     private shareService: ShareService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
-
-  ngOnInit() {
-
+  ) {
+    this.authorName$ = this.userService.getCurrentUserNameFromId(null);
+    this.authorFirstName$ = this.userService.getCurrentUserFirstNameFromId(null);
+    this.categoriesLabels$ = this.categService.getLabelByIdCategory(0);
     this.currentUserId$ = this.shareService.getCurrentUserId();
+  }
 
+  ngOnInit(): void {
     const bookId = this.route.snapshot.paramMap.get('idBook');
 
     if (bookId) {
@@ -46,16 +47,18 @@ export class BookReadComponent implements OnInit {
         (book: Book | undefined) => {
           this.bookRead = book;
 
-          this.authorName$ = this.userService.getCurrentUserNameFromId(
-            this.bookRead?.idUser || null
-          );
-          this.authorFirstName$ = this.userService.getCurrentUserFirstNameFromId(
-            this.bookRead?.idUser || null
-          );
-
-          this.categoriesLabels$ = this.categService.getLabelByIdCategory(
-            this.bookRead?.id ?? 0
-          );
+          if (this.bookRead) {
+            this.authorName$ = this.userService.getCurrentUserNameFromId(
+              this.bookRead.idUser
+            );
+            this.authorFirstName$ =
+              this.userService.getCurrentUserFirstNameFromId(
+                this.bookRead.idUser
+              );
+            this.categoriesLabels$ = this.categService.getLabelByIdCategory(
+              this.bookRead.id
+            );
+          }
         },
         (error: any) => {
           console.error(
@@ -67,11 +70,11 @@ export class BookReadComponent implements OnInit {
     }
   }
 
-  GoToDeletePage(idBook: number | undefined): void {
+  goToDeletePage(idBook: number | undefined): void {
     this.router.navigate(['book/delete', idBook]);
   }
 
-  GoToUpdatePage(idBook: number | undefined): void {
+  goToUpdatePage(idBook: number | undefined): void {
     this.router.navigate(['book/update', idBook]);
   }
 }

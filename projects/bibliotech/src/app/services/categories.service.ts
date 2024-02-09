@@ -54,16 +54,16 @@ export class CategoriesService {
   // méthode pour récupérer les labels des catégories en fonction de l'ID du livre
   getLabelByIdCategory(idBook: number): Observable<string[]> {
     return this.belongService.getIdCategoryByIdBook(idBook).pipe(
-      switchMap(categoryIds => {
+      switchMap((categoryIds) => {
         if (categoryIds.length === 0) {
           // Aucune catégorie trouvée, retourner un Observable vide
           return of([]);
         }
 
         // Pour chaque ID de catégorie, faites une requête HTTP pour obtenir le label
-        const requests = categoryIds.map(categoryId =>
+        const requests = categoryIds.map((categoryId) =>
           this.http.get<any>(`${this.apiURL}/${categoryId}`).pipe(
-            map(response => response.label) // Remplacez 'label' par la propriété correcte dans votre objet de réponse
+            map((response) => response.label) // Remplacez 'label' par la propriété correcte dans votre objet de réponse
           )
         );
 
@@ -71,5 +71,22 @@ export class CategoriesService {
         return forkJoin(requests);
       })
     );
+  }
+
+  getIdCategoryByLabel(label: string): Observable<number | undefined> {
+    const url = `${this.apiURL}?label=${label}`;
+    return this.http
+      .get<any[]>(url)
+      .pipe(
+        map((categories) =>
+          categories.length > 0 ? categories[0].id : undefined
+        )
+      );
+  }
+
+  getLabel(): Observable<string[]> {
+    return this.http
+      .get<any[]>(this.apiURL)
+      .pipe(map((categories) => categories.map((category) => category.label)));
   }
 }

@@ -1,7 +1,3 @@
-<div class="grid">
-    <button (click)="GoToUpdatePage(UserRead?.id)">Modifier</button>
-    <button (click)="GoToDeletePage(UserRead?.id)">Supprimer</button>
-</div>
 <div>
     <h2>Profil de l'utilisateur:</h2>
     <article>
@@ -11,4 +7,8 @@
             <label>Role: {{UserRead?.role}}</label>
         </div>
     </article>
+</div>
+<div class="grid">
+    <button (click)="GoToUpdatePage(UserRead?.id)">Modifier le profil</button>
+    <button (click)="GoToDeletePage(UserRead?.id)">Supprimer le compte</button>
 </div>

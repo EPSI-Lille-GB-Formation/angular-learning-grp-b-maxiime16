@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-
 import { Book } from '../../../models/book';
 import { UserService } from '../../../services/user.service';
 import { CategoriesService } from '../../../services/categories.service';
@@ -16,7 +15,6 @@ import { ShareService } from '../../../services/share.service';
   styleUrl: './book.component.css',
 })
 export class BookComponent implements OnInit {
-  
   categoriesLabels$: Observable<string[]> = new Observable<string[]>();
   authorName$: Observable<string | null> = new Observable<string | null>();
   authorFirstName$: Observable<string | null> = new Observable<string | null>();
@@ -26,11 +24,10 @@ export class BookComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private categService: CategoriesService,
-    private shareService: ShareService,
+    private shareService: ShareService
   ) {}
 
-  @Input('value')
-  book: Book | undefined;
+  @Input('value') book: Book | undefined;
 
   ngOnInit(): void {
     this.isLoggedIn$ = this.shareService.isLoggedIn$;

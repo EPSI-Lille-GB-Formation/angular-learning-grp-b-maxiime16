@@ -1,1 +1,30 @@
-<p>user-create works!</p>
+<div>
+    <h2>Ajouter un utilisateur</h2>
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <article>
+            <div>
+                <label>Nom: {{user?.firstName}}</label>
+                <input type="text" formControlName="firstName" [value]="user?.firstName" />
+            </div>
+            <div>
+                <label>Prénom: {{user?.lastName}}</label>
+                <input type="text" formControlName="lastName" [value]="user?.lastName" />
+            </div>
+            <div>
+                <label>Email: {{user?.email}}</label>
+                <input type="email" formControlName="email" [value]="user?.email" />
+            </div>
+            <div>
+                <label>Mot de passe:</label>
+                <input type="password" formControlName="newPassword" />
+            </div>
+            <div>
+                <label>Rôle:</label>
+                <input type="radio" formControlName="role" value="user" /> Utilisateur
+                <input type="radio" formControlName="role" value="admin" /> Administrateur
+            </div>
+        </article>
+        <button type="submit">Modifier</button>
+        <button type="button" (click)="cancelButton()">Annuler</button>
+    </form>
+</div>

@@ -20,35 +20,30 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class AuthLoginComponent {
   loginForm: FormGroup;
-  champsVides: boolean = false;
-  messageConnexion: string = '';
-  messageConnexionClass: string = '';
+  champsVides = false;
+  messageConnexion = '';
+  messageConnexionClass = '';
 
-  // Constructeur avec injection des dépendances nécessaires
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private shareService: ShareService,
     private router: Router
   ) {
-    // Initialisation du formulaire réactif avec des champs vides et des validateurs
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
     });
   }
 
-  // Fonction appelée lors de la soumission du formulaire
   onSubmit(): void {
-    // Réinitialisation des messages à chaque soumission
     this.champsVides = false;
     this.messageConnexion = '';
     this.messageConnexionClass = '';
 
-    // Vérification de la validité du formulaire
     if (this.loginForm.valid) {
       const user: User = {
-        id: 1,
+        id: 0,
         firstName: '',
         lastName: '',
         email: this.loginForm.value.email,
@@ -56,32 +51,21 @@ export class AuthLoginComponent {
         role: '',
       };
 
-      // Appel du service d'authentification pour vérifier les informations
       this.authService.login(user).subscribe(
         (authenticatedUser: User | null) => {
           if (authenticatedUser) {
-            // Mise à jour de l'état de connexion dans le service de partage
             this.shareService.setLoggedIn(
               true,
               authenticatedUser.id,
               authenticatedUser.role
             );
-            this.messageConnexion = 'Connexion réussie !'; // Message de connexion réussie
-
+            this.messageConnexion = 'Connexion réussie !';
             setTimeout(() => {
-              // Navigation vers la liste des livres après la connexion réussie avec un délai
               this.router.navigate(['']);
             }, 2000);
           } else {
-            // Mise à jour de l'état de connexion en cas d'échec
             this.shareService.setLoggedIn(false, null, null);
             this.messageConnexion = 'Email ou mot de passe incorrect.';
-            console.log(
-              'Connexion échouée: ',
-              this.messageConnexion,
-              '| LoggedValue=',
-              this.shareService.isLoggedIn
-            );
           }
         },
         (error) => {
@@ -90,10 +74,6 @@ export class AuthLoginComponent {
       );
     } else {
       this.champsVides = true;
-      console.log(
-        'Connexion échouée: champ vide| LoggedValue=',
-        this.shareService.isLoggedIn
-      );
     }
   }
 }

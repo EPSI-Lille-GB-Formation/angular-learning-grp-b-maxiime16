@@ -29,7 +29,6 @@ export class BookDeleteComponent implements OnInit {
 
   ngOnInit(): void {
     const idBook = this.route.snapshot.paramMap.get('idBook');
-    console.log('idBook à supprimer: ', idBook);
 
     if (idBook) {
       this.bookService.getBookById(+idBook).subscribe(
@@ -43,29 +42,20 @@ export class BookDeleteComponent implements OnInit {
     }
   }
 
-  deleteBook() {
+  deleteBook(): void {
     if (this.book) {
-      // Afficher la liste des ID Belongs avec l'ID du livre
       this.belongService
         .getBelongIdsByBookId(this.book?.id ?? 0)
         .subscribe((belongIds: number[]) => {
-          console.log('Liste des ID Belongs:', belongIds);
-
-          // Supprimer chaque Belong en utilisant les IDs
           const deleteBelongs = belongIds.map((belongId) =>
             this.belongService.deleteBelongById(belongId)
           );
 
-          // Utiliser forkJoin pour attendre que toutes les suppressions soient terminées
           forkJoin(deleteBelongs).subscribe(
             () => {
-              console.log('Belongs supprimés avec succès');
-
-              // Ensuite, supprimer le livre
               if (this.book && this.book.id) {
                 this.bookService.deleteBook(this.book.id).subscribe(
                   () => {
-                    console.log("Livre supprimé ! Retour a la page d'accueil");
                     this.deleteSuccess = true;
                     this.deleteError = false;
 
@@ -74,10 +64,7 @@ export class BookDeleteComponent implements OnInit {
                     }, 1000);
                   },
                   (error) => {
-                    console.error(
-                      'Erreur lors de la suppression du livre :',
-                      error
-                    );
+                    console.error('Error deleting book:', error);
                     this.deleteSuccess = false;
                     this.deleteError = true;
                   }
@@ -85,10 +72,7 @@ export class BookDeleteComponent implements OnInit {
               }
             },
             (error: any) => {
-              console.error(
-                'Erreur lors de la suppression des Belongs :',
-                error
-              );
+              console.error('Error deleting belongs:', error);
               this.deleteSuccess = false;
               this.deleteError = true;
             }

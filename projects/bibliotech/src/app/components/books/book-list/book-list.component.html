@@ -1,11 +1,22 @@
 <div>
+    <div>
+        <label for="categorySelect">Sélectionnez une catégorie :</label>
+        <select id="categorySelect" [(ngModel)]="selectedCategory" (change)="getIdBookByCategory()">
+            <option value="">Tous les livres</option>
+            <option *ngFor="let category of categories" [value]="category">
+                {{ category }}
+            </option>
+        </select>
+    </div>
     <div *ngIf="isLoggedIn$ | async">
-        <button (click)="GoToBookCreatePage()">Ajouter un livre ⊕</button>
+        <button (click)="goToBookCreatePage()">Ajouter un livre</button>
     </div>
     <h2>Liste des livres: </h2>
     <div class="listBook">
         <ng-container *ngFor="let book of bookList | async">
-            <app-book [value]="book"></app-book>
+            <ng-container *ngIf="shouldDisplayBook(book)">
+                <app-book [value]="book"></app-book>
+            </ng-container>
         </ng-container>
     </div>
 </div>

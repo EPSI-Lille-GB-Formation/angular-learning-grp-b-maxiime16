@@ -48,7 +48,6 @@ export class CategoriesCreateComponent {
             .subscribe((createdCateg: Categories) => {
               this.ajoutReussi = true;
               this.ajoutError = false;
-              console.log('Catégorie créé avec succés: ', createdCateg);
 
               setTimeout(() => {
                 this.router.navigate(['categories']);

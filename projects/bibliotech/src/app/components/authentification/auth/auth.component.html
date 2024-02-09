@@ -1,32 +1,27 @@
-<article>
-    <nav *ngIf="!(isLoggedIn$ | async)" class="grid">
-        <ul>
-            <li>Biblio'Tech - Angular app</li>
-        </ul>
-        <ul>
-            <button (click)="goToLoginPage()" class="button">Se connecter</button>
+<header>
+    <nav class="navbar">
+        <div class="brand">
+            <h1>Biblio'Tech - Angular app</h1>
+        </div>
+        <ul class="nav-links">
+            <li><button (click)="goToHomePage()">Accueil</button></li>
+            <li *ngIf="!(isLoggedIn$ | async)">
+                <button (click)="goToLoginPage()">Se connecter</button>
+            </li>
+            <li *ngIf="!(isLoggedIn$ | async)">
+                <button (click)="goToSignInPage()">S'inscrire</button>
+            </li>
+            <li *ngIf="(isLoggedIn$ | async)">
+                <div class="profile-dropdown">
+                    <button class="profile-btn" (click)="toggleDropdown()">Profil</button>
+                    <div class="dropdown-content" [ngClass]="{ 'show': isDropdownOpen }">
+                        <p>Bonjour {{ currentUserName$ }} {{ currentUserFirstName$ }}</p>
+                        <button (click)="goToUserReadPage()">Voir profil</button>
+                        <button *ngIf="(currentUserRole$ | async) === 'admin'" (click)="goToAdminPage()">Admin zone</button>
+                        <button (click)="logout()">Se déconnecter</button>
+                    </div>
+                </div>
+            </li>
         </ul>
     </nav>
-    <div *ngIf="isLoggedIn$ | async" class="grid">
-        <div>
-            <p>
-                Vous êtes connecté,</p>
-            <p> bonjour {{ currentUserName$ }}
-                {{ currentUserFirstName$ }}
-                </p>
-                <p>role: ({{ currentUserRole$ | async }})</p>
-        </div>
-        <div>
-            <button (click)="goToUserReadPage()">Voir profil</button>
-            <div *ngIf="(currentUserRole$ | async) === 'admin'">
-                <button (click)="goToAdminPage()">
-                    Admin zone
-                </button>
-            </div>
-            <button (click)="logout()">Se déconnecter</button>
-        </div>
-    </div>
-</article>
-<div>
-    <button (click)="goToHomePage()">accueil</button>
-</div>
+</header>

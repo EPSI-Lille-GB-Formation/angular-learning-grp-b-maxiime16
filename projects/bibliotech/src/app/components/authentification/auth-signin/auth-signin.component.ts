@@ -20,9 +20,9 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class AuthSigninComponent {
   registerForm: FormGroup;
-  champsVides: boolean = false;
-  messageInscription: string = '';
-  messageInscriptionClass: string = '';
+  champsVides = false;
+  messageInscription = '';
+  messageInscriptionClass = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,32 +39,27 @@ export class AuthSigninComponent {
         [
           Validators.required,
           Validators.minLength(8),
-          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/),
+          Validators.pattern(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/
+          ),
         ],
       ],
     });
   }
 
   async onSubmit(): Promise<void> {
-    console.log(
-      'Valeur du formulaire avant vérification de la validité :',
-      this.registerForm.value
-    );
-
     this.champsVides = false;
     this.messageInscription = '';
     this.messageInscriptionClass = '';
 
     if (this.registerForm.valid) {
-      console.log('Formulaire est valide.');
-
       const user: User = {
         id: 0,
         firstName: this.registerForm.value.firstName,
         lastName: this.registerForm.value.lastName,
         email: this.registerForm.value.email,
         password: this.registerForm.value.password,
-        role: 'user', // role user par défaut
+        role: 'user',
       };
 
       this.authService.checkUserExistence(user.email).subscribe(
@@ -81,7 +76,6 @@ export class AuthSigninComponent {
                     registeredUser.role
                   );
                   this.messageInscription = 'Inscription réussie !';
-
                   setTimeout(() => {
                     this.router.navigate(['/login']);
                   }, 2000);
@@ -104,7 +98,6 @@ export class AuthSigninComponent {
         }
       );
     } else {
-      console.log('Formulaire est invalide.');
       this.champsVides = true;
     }
   }

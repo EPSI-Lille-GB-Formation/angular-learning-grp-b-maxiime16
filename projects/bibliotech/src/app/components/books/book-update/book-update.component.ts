@@ -2,19 +2,19 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormGroup,
-  ReactiveFormsModule,
   FormBuilder,
   FormControl,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import { BookService } from '../../../services/book.service';
-import { CategoriesService } from '../../../services/categories.service';
-import { Book } from '../../../models/book';
 import { Observable, forkJoin, map } from 'rxjs';
-import { BelongService } from '../../../services/belong.service';
-import { Belong } from '../../../models/belong';
+
+import { Book } from '../../../models/book';
+import { BookService } from '../../../services/book.service';
 import { Categories } from '../../../models/categories';
+import { CategoriesService } from '../../../services/categories.service';
+import { Belong } from '../../../models/belong';
+import { BelongService } from '../../../services/belong.service';
 
 @Component({
   selector: 'app-book-update',
@@ -26,18 +26,14 @@ import { Categories } from '../../../models/categories';
 export class BookUpdateComponent implements OnInit {
   book: Book | undefined;
   categoryControls: { [key: number]: FormControl } = {};
-  categories$: Observable<Categories[]> = new Observable<Categories[]>();
-  categoriesLabels$: Observable<string[]> = new Observable<string[]>();
+  categories$: Observable<Categories[]>;
+  categoriesLabels$: Observable<string[]>;
 
   modifReussi: boolean = false;
   erreurAjout: boolean = false;
   errorMessage: string = '';
 
-  bookForm: FormGroup = this.formBuilder.group({
-    title: [''],
-    resume: [''],
-    image: [''],
-  });
+  bookForm: FormGroup;
 
   constructor(
     private bookService: BookService,
@@ -46,33 +42,34 @@ export class BookUpdateComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) {
+    this.categories$ = this.categoriesService.getCategories();
+    this.categoriesLabels$ = this.categoriesService.getLabelByIdCategory(0);
+    this.bookForm = this.formBuilder.group({
+      title: [''],
+      resume: [''],
+      image: [''],
+    });
+  }
 
   ngOnInit(): void {
     const idBook = this.route.snapshot.paramMap.get('idBook');
 
-    this.categoriesService.getCategories().subscribe(
-      (categories: Categories[]) => {
-        this.categories$ = new Observable<Categories[]>((observer) => {
-          observer.next(categories);
-          observer.complete();
-        });
-      },
-      (error: any) => {
-        console.error(error);
-      }
-    );
-
     if (idBook) {
-      this.bookService
-        .getBookById(+idBook)
-        .subscribe((book: Book | undefined) => {
+      this.bookService.getBookById(+idBook).subscribe(
+        (book: Book | undefined) => {
           this.book = book;
-          console.log('Livre à modifier: ', this.book);
           this.categoriesLabels$ = this.categoriesService.getLabelByIdCategory(
             this.book?.id ?? 0
           );
-        });
+        },
+        (error: any) => {
+          console.error(
+            'Erreur lors de la récupération des informations du livre',
+            error
+          );
+        }
+      );
     }
   }
 
@@ -87,51 +84,34 @@ export class BookUpdateComponent implements OnInit {
     if (this.bookForm.valid) {
       const updatedBook: Book = {
         ...this.book!,
-        title:
-          this.bookForm.value.title !== ''
-            ? this.bookForm.value.title
-            : this.book!.title,
-        resume:
-          this.bookForm.value.resume !== ''
-            ? this.bookForm.value.resume
-            : this.book!.resume,
-        image:
-          this.bookForm.value.image !== ''
-            ? this.bookForm.value.image
-            : this.book!.image,
+        title: this.bookForm.value.title || this.book!.title,
+        resume: this.bookForm.value.resume || this.book!.resume,
+        image: this.bookForm.value.image || this.book!.image,
         updateAt: new Date(),
       };
 
-      // Afficher la liste des ID Belongs avec l'ID du livre
-      this.belongService
-        .getBelongIdsByBookId(this.book?.id ?? 0)
-        .subscribe((belongIds: number[]) => {
-          console.log('Liste des ID Belongs:', belongIds);
+      const belongIds$ = this.belongService.getBelongIdsByBookId(
+        this.book?.id ?? 0
+      );
 
-          // Supprimer chaque Belong en utilisant les IDs
-          belongIds.forEach((belongId) => {
-            this.belongService.deleteBelongById(belongId).subscribe(
-              () => {
-                console.log(
-                  `Belong avec l'ID ${belongId} supprimé avec succès`
-                );
-              },
-              (error: any) => {
-                console.error(
-                  `Erreur lors de la suppression de Belong avec l'ID ${belongId}`,
-                  error
-                );
-              }
-            );
-          });
+      belongIds$.subscribe((belongIds: number[]) => {
+        belongIds.forEach((belongId) => {
+          this.belongService.deleteBelongById(belongId).subscribe(
+            () => {},
+            (error: any) => {
+              console.error(
+                `Erreur lors de la suppression de Belong avec l'ID ${belongId}`,
+                error
+              );
+            }
+          );
         });
+      });
 
-      // Récupération des catégories sélectionnées
       const selectedCategories = Object.keys(this.categoryControls)
         .filter((categoryId) => this.categoryControls[categoryId as any].value)
         .map((categoryId) => +categoryId);
 
-      // Création d'un tableau d'observables pour récupérer les Belongs
       const belongObservables = selectedCategories.map((categoryId) =>
         this.belongService.getBelongs().pipe(
           map((belongs: Belong[]) => ({
@@ -144,12 +124,9 @@ export class BookUpdateComponent implements OnInit {
 
       forkJoin(belongObservables).subscribe((newBelongs: Belong[]) => {
         newBelongs.forEach((newBelong: Belong, index) => {
-          newBelong.id += index; // Incrémentation de l'ID
-          console.log('new belong', newBelong);
+          newBelong.id += index;
           this.belongService.createBelong(newBelong).subscribe(
-            (createdBelong: Belong) => {
-              console.log('Belong créé avec succès: ', createdBelong);
-            },
+            () => {},
             (error: any) => {
               console.error(error);
             }
@@ -158,7 +135,6 @@ export class BookUpdateComponent implements OnInit {
 
         this.bookService.updateBook(updatedBook).subscribe(
           () => {
-            console.log("Livre mis à jour! Retour a la page d'accueil");
             this.modifReussi = true;
             this.erreurAjout = false;
 

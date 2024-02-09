@@ -1,11 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable, forkJoin, map } from 'rxjs';
@@ -14,8 +8,8 @@ import { Book } from '../../../models/book';
 import { BookService } from '../../../services/book.service';
 import { Categories } from '../../../models/categories';
 import { CategoriesService } from '../../../services/categories.service';
-import { BelongService } from '../../../services/belong.service';
 import { Belong } from '../../../models/belong';
+import { BelongService } from '../../../services/belong.service';
 import { ShareService } from '../../../services/share.service';
 
 @Component({
@@ -41,14 +35,13 @@ export class BookCreateComponent implements OnInit {
   constructor(
     private bookService: BookService,
     private categoriesService: CategoriesService,
-    private beloongService: BelongService,
+    private belongService: BelongService,
     private formBuilder: FormBuilder,
     private router: Router,
     private shareService: ShareService,
   ) {}
 
   ngOnInit(): void {
-    // Récupérez les catégories depuis le service et assignez-les à votre observable
     this.categoriesService.getCategories().subscribe(
       (categories: Categories[]) => {
         this.categories$ = new Observable<Categories[]>((observer) => {
@@ -71,75 +64,66 @@ export class BookCreateComponent implements OnInit {
 
   onSubmit(): void {
     if (this.bookForm.valid) {
-      const userId = this.shareService.getCurrentUserId();
-      this.bookService.getBooks().subscribe(
-        (books: Book[]) => {
-          const newBook: Book = {
-            id: this.bookService.genIdBook(books),
-            title: this.bookForm.get('title')?.value,
-            resume: this.bookForm.get('resume')?.value,
-            image: this.bookForm.get('image')?.value,
-            createdAt: new Date(),
-            updateAt: null,
-            idUser: userId,
-          };
-          console.log('Nouveau Book: ', newBook);
-
-          // Récupération des catégories sélectionnées
-          const selectedCategories = Object.keys(this.categoryControls)
-            .filter(
-              (categoryId) => this.categoryControls[categoryId as any].value
-            )
-            .map((categoryId) => +categoryId);
-
-          // Création d'un tableau d'observables pour récupérer les Belongs
-          const belongObservables = selectedCategories.map((categoryId) =>
-            this.beloongService.getBelongs().pipe(
-              map((belongs: Belong[]) => ({
-                id: this.beloongService.genIdBelong(belongs),
-                idBook: newBook.id,
-                idCategory: categoryId,
-              }))
-            )
-          );
-
-          // Utilisation de forkJoin pour attendre que tous les appels asynchrones soient complets
-          forkJoin(belongObservables).subscribe((newBelongs: Belong[]) => {
-            newBelongs.forEach((newBelong: Belong, index) => {
-              newBelong.id += index; // Incrémentation de l'ID
-              console.log('new belong', newBelong);
-              this.beloongService.createBelong(newBelong).subscribe(
-                (createdBelong: Belong) => {
-                  console.log('Belong créé avec succès: ', createdBelong);
-                },
-                (error: any) => {
-                  console.error(error);
-                }
+      this.shareService.getCurrentUserId().subscribe(userId => {
+        if (userId !== null) {
+          this.bookService.getBooks().subscribe(
+            (books: Book[]) => {
+              const newBook: Book = {
+                id: this.bookService.genIdBook(books),
+                title: this.bookForm.get('title')?.value,
+                resume: this.bookForm.get('resume')?.value,
+                image: this.bookForm.get('image')?.value,
+                createdAt: new Date(),
+                updateAt: null,
+                idUser: userId,
+              };
+  
+              const selectedCategories = Object.keys(this.categoryControls)
+                .filter(
+                  (categoryId) => this.categoryControls[categoryId as any].value
+                )
+                .map((categoryId) => +categoryId);
+  
+              const belongObservables = selectedCategories.map((categoryId) =>
+                this.belongService.getBelongs().pipe(
+                  map((belongs: Belong[]) => ({
+                    id: this.belongService.genIdBelong(belongs),
+                    idBook: newBook.id,
+                    idCategory: categoryId,
+                  }))
+                )
               );
-            });
-
-            this.bookService.createBook(newBook).subscribe(
-              (createdBook: Book) => {
-                console.log('Book ajouté', newBook);
-                this.ajoutReussi = true;
-                this.ajoutError = false;
-              },
-              (error: any) => {
-                console.error(error);
-                this.ajoutReussi = false;
-                this.ajoutError = true;
-              }
-            );
-          });
-        },
-        (error: any) => {
-          console.error(error);
+  
+              forkJoin(belongObservables).subscribe((newBelongs: Belong[]) => {
+                newBelongs.forEach((newBelong: Belong, index) => {
+                  newBelong.id += index;
+                  this.belongService.createBelong(newBelong).subscribe();
+                });
+  
+                this.bookService.createBook(newBook).subscribe(
+                  () => {
+                    this.ajoutReussi = true;
+                    this.ajoutError = false;
+                  },
+                  () => {
+                    this.ajoutReussi = false;
+                    this.ajoutError = true;
+                  }
+                );
+              });
+            },
+            (error: any) => {
+              console.error(error);
+            }
+          );
+        } else {
+          console.error("Current user ID is null.");
         }
-      );
+      });
     }
   }
 
-  goToHomePage() {
+  goToHomePage(): void {
     this.router.navigate(['']);
   }
 }

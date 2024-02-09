@@ -14,41 +14,40 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.css',
 })
-
 export class AuthComponent implements OnInit {
-
-  isLoggedIn$: Observable<boolean> = new Observable<boolean>();
-  currentUserId$: Observable<number | null> = new Observable<number | null>();
-  currentUserRole$: Observable<string | null> = new Observable<string | null>();
+  isLoggedIn$: Observable<boolean>;
+  currentUserId$: Observable<number | null>;
+  currentUserRole$: Observable<string | null>;
   currentUserName$: string | null = null;
   currentUserFirstName$: string | null = null;
+
+  isDropdownOpen = false;
 
   constructor(
     private router: Router,
     private shared: ShareService,
     private authService: AuthService,
     private userService: UserService
-  ) {}
+  ) {
+    this.isLoggedIn$ = new Observable<boolean>();
+    this.currentUserId$ = new Observable<number | null>();
+    this.currentUserRole$ = new Observable<string | null>();
+  }
 
   ngOnInit() {
     this.isLoggedIn$ = this.shared.isLoggedIn$;
     this.currentUserId$ = this.shared.currentUserId$;
     this.currentUserRole$ = this.shared.currentUserRole$;
 
-    this.currentUserId$.subscribe((userId: number | null) => {
+    this.currentUserId$.subscribe((userId) => {
       if (userId !== null) {
         this.userService
           .getCurrentUserNameFromId(userId)
-          .subscribe(
-            (userName: string | null) => (this.currentUserName$ = userName)
-          );
+          .subscribe((userName) => (this.currentUserName$ = userName));
 
         this.userService
           .getCurrentUserFirstNameFromId(userId)
-          .subscribe(
-            (firstName: string | null) =>
-              (this.currentUserFirstName$ = firstName)
-          );
+          .subscribe((firstName) => (this.currentUserFirstName$ = firstName));
       }
     });
   }
@@ -56,16 +55,21 @@ export class AuthComponent implements OnInit {
   goToLoginPage() {
     this.router.navigate(['/login']);
   }
+
   goToHomePage() {
     this.router.navigate(['']);
   }
 
   goToUserReadPage(): void {
-    this.currentUserId$.subscribe((userId: number | null) => {
+    this.currentUserId$.subscribe((userId) => {
       if (userId !== null) {
         this.router.navigate(['/user', userId]);
       }
     });
+  }
+
+  goToSignInPage() {
+    this.router.navigate(['/sign-in']);
   }
 
   goToAdminPage() {
@@ -77,5 +81,9 @@ export class AuthComponent implements OnInit {
     setTimeout(() => {
       this.router.navigate(['']);
     }, 1000);
+  }
+
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 }

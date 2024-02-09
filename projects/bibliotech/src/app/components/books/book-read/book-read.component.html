@@ -1,6 +1,6 @@
 <div class="grid" *ngIf="(currentUserId$ | async) === bookRead?.idUser">
-    <button (click)="GoToUpdatePage(bookRead?.id)">Modifier</button>
-    <button (click)="GoToDeletePage(bookRead?.id)">Supprimer</button>
+    <button (click)="goToUpdatePage(bookRead?.id)">Modifier</button>
+    <button (click)="goToDeletePage(bookRead?.id)">Supprimer</button>
 </div>
 <div>
     <h2>Informations sur le livre:</h2>

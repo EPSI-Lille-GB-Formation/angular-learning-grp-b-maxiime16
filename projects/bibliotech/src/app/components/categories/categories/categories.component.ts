@@ -14,8 +14,7 @@ import { Categories } from '../../../models/categories';
 export class CategoriesComponent {
   constructor(private router: Router) {}
 
-  @Input('value')
-  categorie: Categories | undefined;
+  @Input('value') categorie: Categories | undefined;
 
   GoToUpdateCategPage(idCategory: number | undefined): void {
     this.router.navigate(['categories/update', idCategory]);
