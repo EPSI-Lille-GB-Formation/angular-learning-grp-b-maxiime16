@@ -3,16 +3,16 @@
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
         <article>
             <div>
-                <label>Nom: {{user?.firstName}}</label>
-                <input type="text" formControlName="firstName" [value]="user?.firstName" />
+                <label>Nom: </label>
+                <input type="text" formControlName="firstName"/>
             </div>
             <div>
                 <label>Prénom: {{user?.lastName}}</label>
-                <input type="text" formControlName="lastName" [value]="user?.lastName" />
+                <input type="text" formControlName="lastName"/>
             </div>
             <div>
-                <label>Email: {{user?.email}}</label>
-                <input type="email" formControlName="email" [value]="user?.email" />
+                <label>Email:</label>
+                <input type="email" formControlName="email"/>
             </div>
             <div>
                 <label>Mot de passe:</label>

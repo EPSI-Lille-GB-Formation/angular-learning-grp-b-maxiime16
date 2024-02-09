@@ -27,8 +27,6 @@ import { UserCreateComponent } from './components/users/user-create/user-create.
 import { AdminPageComponent } from './components/authentification/admin-page/admin-page.component';
 import { AuthGuard } from './guards/authGuard';
 
-import { EasterEggComponent } from './models/easter-egg/easter-egg.component';
-
 export const routes: Routes = [
   { path: '', component: BookListComponent },
 
@@ -102,8 +100,9 @@ export const routes: Routes = [
   {
     path: 'user/:idUser',
     component: UserReadComponent,
-    canActivate: [AuthGuard],
+    
   },
+  { path: 'user/create', component: UserCreateComponent },
   {
     path: 'user/delete/:idUser',
     component: UserDeleteComponent,
@@ -114,7 +113,4 @@ export const routes: Routes = [
     component: UserUpdateComponent,
     canActivate: [AuthGuard],
   },
-  { path: 'user/create', component: UserCreateComponent,},
-
-  { path: 'easter-egg', component: EasterEggComponent },
 ];
