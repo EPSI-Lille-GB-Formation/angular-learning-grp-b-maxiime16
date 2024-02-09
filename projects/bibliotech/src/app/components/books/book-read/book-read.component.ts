@@ -22,6 +22,7 @@ export class BookReadComponent implements OnInit {
   authorFirstName$: Observable<string | null>;
   categoriesLabels$: Observable<string[]>;
   currentUserId$: Observable<number | null>;
+  currentUserRole$: Observable<String | null>;
 
   bookRead: Book | undefined;
 
@@ -36,10 +37,15 @@ export class BookReadComponent implements OnInit {
     this.authorName$ = this.userService.getCurrentUserNameFromId(null);
     this.authorFirstName$ = this.userService.getCurrentUserFirstNameFromId(null);
     this.categoriesLabels$ = this.categService.getLabelByIdCategory(0);
-    this.currentUserId$ = this.shareService.getCurrentUserId();
+    this.currentUserId$ = new Observable<number | null>();
+    this.currentUserRole$ = new Observable<string | null>();
   }
 
   ngOnInit(): void {
+
+    this.currentUserId$ = this.shareService.currentUserId$;
+    this.currentUserRole$ = this.shareService.currentUserRole$;
+
     const bookId = this.route.snapshot.paramMap.get('idBook');
 
     if (bookId) {

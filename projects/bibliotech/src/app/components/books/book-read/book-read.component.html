@@ -1,4 +1,4 @@
-<div class="grid" *ngIf="(currentUserId$ | async) === bookRead?.idUser">
+<div class="grid" *ngIf="(currentUserRole$ | async) === 'admin' || (currentUserId$ | async) === bookRead?.idUser">
     <button (click)="goToUpdatePage(bookRead?.id)">Modifier</button>
     <button (click)="goToDeletePage(bookRead?.id)">Supprimer</button>
 </div>

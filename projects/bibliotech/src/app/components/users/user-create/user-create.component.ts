@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../../services/user.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from '../../../models/user';
 import { CommonModule } from '@angular/common';
@@ -20,15 +25,15 @@ export class UserCreateComponent {
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
-    private router: Router,
+    private router: Router
   ) {}
 
   userForm: FormGroup = this.formBuilder.group({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    role: '',
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    email: ['', Validators.required],
+    password: ['', Validators.required],
+    role: ['', Validators.required],
   });
 
   onSubmit(): void {

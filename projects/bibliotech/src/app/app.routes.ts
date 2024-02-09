@@ -100,14 +100,20 @@ export const routes: Routes = [
   {
     path: 'user/:idUser',
     component: UserReadComponent,
-    
+    canActivate: [AuthGuard],
   },
-  { path: 'user/create', component: UserCreateComponent },
   {
     path: 'user/delete/:idUser',
     component: UserDeleteComponent,
     canActivate: [AuthGuard],
   },
+
+  {
+    path: 'user/create',
+    component: UserCreateComponent,
+    canActivate: [AuthGuard],
+  },
+
   {
     path: 'user/update/:idUser',
     component: UserUpdateComponent,

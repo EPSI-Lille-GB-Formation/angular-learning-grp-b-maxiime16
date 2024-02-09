@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { CategoriesService } from '../../../services/categories.service';
@@ -25,7 +25,6 @@ export class CategoriesCreateComponent {
   constructor(
     private categService: CategoriesService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router
   ) {}
 
