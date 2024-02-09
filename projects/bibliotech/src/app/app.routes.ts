@@ -114,11 +114,7 @@ export const routes: Routes = [
     component: UserUpdateComponent,
     canActivate: [AuthGuard],
   },
-  {
-    path: 'user/create',
-    component: UserCreateComponent,
-    canActivate: [AuthGuard],
-  },
+  { path: 'user/create', component: UserCreateComponent,},
 
   { path: 'easter-egg', component: EasterEggComponent },
 ];

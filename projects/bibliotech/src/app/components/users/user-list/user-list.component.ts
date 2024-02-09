@@ -26,6 +26,6 @@ export class UserListComponent implements OnInit{
   }
 
   GoToUserCreatePage(){
-    this.router.navigate(['/user/create']);
+    this.router.navigate(['user/create']);
   }
 }
